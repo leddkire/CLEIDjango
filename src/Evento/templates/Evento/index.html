@@ -1,0 +1,70 @@
+<h1>Lista de Eventos del CLEI </h1>
+
+{% if apertura %}
+<h2> Evento de apertura: </h2>
+<ul>
+	{% for apert in apertura %}
+
+		<li><a href="{% url 'Evento:detalle' apert.id 'apertura' %}">{{apert.titulo}}</a></li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2> No hay un evento de apertura. </h2>
+{% endif %}
+
+{% if clausura %}
+<h2> Evento de clausura: </h2>
+<ul>
+	{% for claus in clausura %}
+		<li><a href= "{% url 'Evento:detalle' claus.id 'clausura' %}">{{claus.titulo}}</a></li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2> No hay un evento de clausura. </h2>
+{% endif %}
+
+{% if talleres %}
+<h2>Talleres:</h2>
+<ul>
+	{% for taller in talleres %}
+		<li><a href="{% url 'Evento:detalle' taller.id 'taller' %}"> {{taller.titulo}} </a> </li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2>No hay talleres. </h2>
+{% endif %}
+
+{% if ponencias %}
+<h2>Ponencias:</h2>
+<ul>
+	{% for ponencia in ponencias %}
+		<li><a href = "{% url 'Evento:detalle' ponencia.id 'ponencia' %}" > {{ponencia.titulo}} </a> </li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2> </h2>
+{% endif %}
+
+{% if charlasInvitadas %}
+<h2>Charlas Invitadas:</h2>
+<ul>
+	{% for charlas in charlasInvitadas %}
+		<li><a href = "{% url 'Evento:detalle' charlas.id 'charla' %}" >  {{charlas.titulo}}</a></li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2>No hay charlas invitadas. </h2>
+{% endif %}
+
+{% if eventosSociales %}
+<h2>Eventos Sociales:</h2>
+<ul>
+	{% for sociales in eventosSociales %}
+		<li><a href = "{% url 'Evento:detalle' sociales.id 'social' %}" > {{sociales.titulo}} </a>  </li>
+	{% endfor %}
+</ul>
+{% else %}
+<h2> No hay eventos sociales. </h2>
+{% endif %}
+
+
