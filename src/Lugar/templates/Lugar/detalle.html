@@ -1,0 +1,30 @@
+<h1> {{lugar.nombre}} </h1>
+<a href = "{% url 'Lugar:definirEvento' lugar.id %}"> Asignar un nuevo evento a este lugar </a>
+<h3> Eventos asignados a este lugar: </h3>
+
+<ul>
+	{% for apertura in lugar.apertura_set.all %}
+		<li> {{ apertura.titulo }} (Evento de apertura).</li>
+	{% endfor %}
+
+	{% for clausura in lugar.clausura_set.all %}
+		<li> {{ clausura.titulo }} (Evento de clausura).</li>
+	{% endfor %}
+
+	{% for eventosocial in lugar.eventosocial_set.all %}
+		<li> {{ eventosocial.titulo }} (Evento Social).</li>
+	{% endfor %}
+
+	{% for taller in lugar.taller_set.all %}
+		<li> {{ taller.titulo }} (Taller).</li>
+	{% endfor %}
+
+	{% for ponencia in lugar.ponencia_set.all %}
+		<li> {{ ponencia.titulo }} (Ponencia).</li>
+	{% endfor %}
+
+	{% for charlainvitada in lugar.charlainvitada_set.all %}
+		<li> {{ charlainvitada.titulo }} (Charla Invitada).</li>
+	{% endfor %}
+
+</ul>

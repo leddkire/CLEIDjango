@@ -1,0 +1,11 @@
+<h1> Lista de lugares en la conferencia: </h2>
+
+{% if listaLugares %}
+	<ul>
+	{% for lugar in listaLugares %}
+		<li><a href="{% url 'Lugar:detalle' lugar.id %}">{{lugar.nombre}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay lugares disponibles </p>
+{% endif %}
