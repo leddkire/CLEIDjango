@@ -1,0 +1,14 @@
+<h1> Lista de topicos : </h1>
+
+<a href="{% url 'Topico:mostrarFormTopico' %}"> Crear un nuevo topico </a>
+
+{% if topicos %}
+	<ul>
+	{% for top in topicos %}
+		<li>{{top.nombre}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay topicos disponibles </p>
+{% endif %}
+
