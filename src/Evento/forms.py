@@ -4,4 +4,10 @@ from Evento.models import Evento, Apertura, Clausura, Taller, Ponencia, CharlaIn
 class EventoForm(ModelForm):
     class Meta:
         model = Evento
+        fields = ['lugar','titulo', 'duracion', 'fechaIni', 'horaIni']
+        
+
+class EventoFormParaLugar(ModelForm):
+    class Meta:
+        model = Evento
         fields = ['titulo', 'duracion', 'fechaIni', 'horaIni']

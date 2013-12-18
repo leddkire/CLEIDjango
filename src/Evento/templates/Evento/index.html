@@ -1,5 +1,7 @@
 <h1>Lista de Eventos del CLEI </h1>
 
+<a href="{% url 'Evento:definirEvento' %}"> Crear un nuevo evento </a>
+
 {% if apertura %}
 <h2> Evento de apertura: </h2>
 <ul>
@@ -49,7 +51,7 @@
 <h2>Charlas Invitadas:</h2>
 <ul>
 	{% for charlas in charlasInvitadas %}
-		<li><a href = "{% url 'Evento:detalle' charlas.id 'charla' %}" >  {{charlas.titulo}}</a></li>
+		<li><a href = "{% url 'Evento:detalle' charlas.id 'charlaInvitada' %}" >  {{charlas.titulo}}</a></li>
 	{% endfor %}
 </ul>
 {% else %}
@@ -60,7 +62,7 @@
 <h2>Eventos Sociales:</h2>
 <ul>
 	{% for sociales in eventosSociales %}
-		<li><a href = "{% url 'Evento:detalle' sociales.id 'social' %}" > {{sociales.titulo}} </a>  </li>
+		<li><a href = "{% url 'Evento:detalle' sociales.id 'eventoSocial' %}" > {{sociales.titulo}} </a>  </li>
 	{% endfor %}
 </ul>
 {% else %}
