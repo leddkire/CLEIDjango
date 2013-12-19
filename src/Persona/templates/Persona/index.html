@@ -1,0 +1,14 @@
+<h1>Lista de Participantes del CLEI </h1>
+
+<a href="{% url 'Persona:definirPersona' %}"> Crear una nueva persona </a>
+
+{% if participante %}
+<h2> Persona de participante: </h2>
+<ul>
+        {% for elemento in participante %}
+                <li><a href="{% url 'Persona:detalle' elemento.id 'participante' %}">{{elemento.correo}}</a></li>
+        {% endfor %}
+</ul>
+{% else %}
+<h2> No hay una persona de participante. </h2>
+{% endif %}
