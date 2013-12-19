@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext, loader
+from django.db import IntegrityError
 
 from Lugar.models import Lugar
+from Lugar.forms import LugarForm
 from Evento.forms import EventoFormParaLugar
 from Evento.models import Apertura, Clausura, Taller, Ponencia, CharlaInvitada, EventoSocial
 
@@ -43,29 +45,29 @@ def asignar(request, lugar_id, evento_tipo):
             if(evento_tipo == 'apertura'):
                 evento = Apertura()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             elif(evento_tipo == 'clausura'):
                 evento = Clausura()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             elif(evento_tipo == 'taller'):
                 evento = Taller()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             elif(evento_tipo == 'ponencia'):
                 evento = Ponencia()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             elif(evento_tipo == 'charlaInvitada'):
                 evento = CharlaInvitada()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             elif(evento_tipo == 'eventoSocial'):
                 evento = EventoSocial()
                 armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:detalle', args=(lugar_id)))
+                return HttpResponseRedirect(reverse('Lugar:index'))
             else:
-                return HttpResponse
+                return HttpResponse("Error.")
         else:
             form = EventoFormParaLugar()
             
@@ -74,3 +76,25 @@ def asignar(request, lugar_id, evento_tipo):
                    'error_message' : "No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida.",
                    'lugar_id':lugar_id, 
                    'evento_tipo':evento_tipo,})
+
+def crear(request):
+    form = LugarForm()
+    return render(request, 'Lugar/crear.html', {'form':form})
+
+def guardar(request):
+    if request.method == 'POST':
+        form = LugarForm(request.POST)
+        if form.is_valid():
+            try:
+                lugar = Lugar()
+                lugar.nombre = form.cleaned_data['nombre']
+                lugar.ubicacion = form.cleaned_data['ubicacion']
+                lugar.capacidadMax = form.cleaned_data['capacidadMax']
+                lugar.save()
+                return HttpResponseRedirect(reverse('Lugar:index'))
+            except IntegrityError: 
+                return render(request, 'Lugar/crear.html', {'error_message':'El lugar ya existe.'})
+        else:
+            return render(request, 'Lugar/crear.html', {'error_message':'Datos ingresados no son validos.',
+                                                        'form':form})
+    

@@ -1,0 +1,9 @@
+<h1>Crear un lugar:</h1>
+
+{% if  error_message %} {{error_message}} {% endif %}
+
+<form action = {% url 'Lugar:guardar' %} method="post">
+{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Crear Lugar"/>
+</form>
