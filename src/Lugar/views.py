@@ -8,6 +8,7 @@ from Lugar.models import Lugar
 from Lugar.forms import LugarForm
 from Evento.forms import EventoFormParaLugar
 from Evento.models import Apertura, Clausura, Taller, Ponencia, CharlaInvitada, EventoSocial
+from Evento.funciones import existe
 
 def indice(request):
     listaLugares = Lugar.objects.all()
@@ -42,38 +43,42 @@ def asignar(request, lugar_id, evento_tipo):
     if request.method == 'POST':
         form = EventoFormParaLugar(request.POST)
         if form.is_valid():
-            if(evento_tipo == 'apertura'):
-                evento = Apertura()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
-            elif(evento_tipo == 'clausura'):
-                evento = Clausura()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
-            elif(evento_tipo == 'taller'):
-                evento = Taller()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
-            elif(evento_tipo == 'ponencia'):
-                evento = Ponencia()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
-            elif(evento_tipo == 'charlaInvitada'):
-                evento = CharlaInvitada()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
-            elif(evento_tipo == 'eventoSocial'):
-                evento = EventoSocial()
-                armarEntidad(lugar,evento)
-                return HttpResponseRedirect(reverse('Lugar:index'))
+            if not(existe(form.cleaned_data['titulo'])):
+                if evento_tipo == 'apertura':
+                    evento = Apertura()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                elif evento_tipo == 'clausura':
+                    evento = Clausura()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                elif evento_tipo == 'taller':
+                    evento = Taller()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                elif evento_tipo == 'ponencia':
+                    evento = Ponencia()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                elif evento_tipo == 'charlaInvitada':
+                    evento = CharlaInvitada()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                elif evento_tipo == 'eventoSocial':
+                    evento = EventoSocial()
+                    armarEntidad(lugar,evento)
+                    return HttpResponseRedirect(reverse('Lugar:index'))
+                else:
+                    return HttpResponse("Error.")
             else:
-                return HttpResponse("Error.")
+                error_message="Un evento con ese titulo ya existe."
+                
         else:
-            form = EventoFormParaLugar()
-            
+            error_message="No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida."
+    form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', 
                   {'form':form, 
-                   'error_message' : "No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida.",
+                   'error_message' : error_message,
                    'lugar_id':lugar_id, 
                    'evento_tipo':evento_tipo,})
 
