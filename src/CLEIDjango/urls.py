@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^lugar/', include('Lugar.urls', namespace="Lugar")),
     url(r'^topico/', include('Topico.urls', namespace="Topico")),
     url(r'^articulo/', include('Articulo.urls', namespace="Articulo")),
+    url(r'^evaluacion/', include('Evaluacion.urls', namespace="Evaluacion")),
     # Examples:
     # url(r'^$', 'CLEIDjango.views.home', name='home'),
     # url(r'^CLEIDjango/', include('CLEIDjango.foo.urls')),

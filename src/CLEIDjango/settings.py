@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'Lugar',
     'Topico',
     'Articulo',
+    'Evaluacion',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
