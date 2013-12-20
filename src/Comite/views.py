@@ -39,7 +39,7 @@ def comprobarEmailComite(request):
             else:
                 try:
                     com = Comite.objects.get(correo = correoForm)
-                except Comite.DoesNotExists:
+                except Comite.DoesNotExist:
                     com = None
                 if com:
                     form = CorreoForm()
@@ -54,7 +54,7 @@ def comprobarEmailComite(request):
             form = CorreoForm()
     return render(request, 'Comite/comprobarEmailComite.html', 
                   {'form':form, 
-                   'error_message' : "No se lleno el formulario correctamente. Coloque un email valido."})
+                   'error_message' : "Coloque un email valido."})
             
 
 
@@ -110,7 +110,7 @@ def crearComite(request):
                 formPersonaComite.cleaned_data['presidente'] = False
                 return render(request, 'Comite/crearComite.html', 
                   {'formPersonaComite':formPersonaComite, 
-                   'error_message' : "No se lleno el formulario correctamente. Ya existe un presidente del comite."})
+                   'error_message' : "Ya existe un presidente del comite."})
         else:
             form = PersonaComiteForm()
             
