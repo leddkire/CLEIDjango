@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^articulo/', include('Articulo.urls', namespace="Articulo")),
     url(r'^persona/', include('Persona.urls', namespace="Persona")),
     url(r'^comite/', include('Comite.urls', namespace="Comite")),
-    url(r'^evaluacion/', include('Evaluacion.urls', namespace="Evaluacion")),
+    #url(r'^evaluacion/', include('Evaluacion.urls', namespace="Evaluacion")),
     # Examples:
     # url(r'^$', 'CLEIDjango.views.home', name='home'),
     # url(r'^CLEIDjango/', include('CLEIDjango.foo.urls')),
