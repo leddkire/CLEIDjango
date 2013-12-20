@@ -1,0 +1,9 @@
+<h1>Crear un articulo </h1>
+
+{% if error_message %} <p> {{error_message}} </p> {% endif %}
+
+<form action="{% url 'Articulo:crear' %}" method="post">
+{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Crear"/>
+</form>

@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from Evento.models import Apertura,Clausura,Taller,Ponencia,CharlaInvitada, EventoSocial
 from Evento.forms import EventoForm
-from Evento.funciones import existe
+from Evento.funciones import existe, existeApertura, existeClausura
 
 def indice(request):
     apertura = Apertura.objects.all()
@@ -68,13 +68,19 @@ def crear(request, evento_tipo):
         if form.is_valid():
             if not(existe(form.cleaned_data['titulo'])):
                 if evento_tipo == 'apertura':
-                    evento = Apertura()
-                    armarEntidad(evento)
-                    return HttpResponseRedirect(reverse('Evento:indice'))
+                    if not existeApertura():
+                        evento = Apertura()
+                        armarEntidad(evento)
+                        return HttpResponseRedirect(reverse('Evento:indice'))
+                    else:
+                        err = "Ya existe un evento de apertura en el CLEI"
                 elif evento_tipo == 'clausura':
-                    evento = Clausura()
-                    armarEntidad(evento)
-                    return HttpResponseRedirect(reverse('Evento:indice'))
+                    if not existeClausura():
+                        evento = Clausura()
+                        armarEntidad(evento)
+                        return HttpResponseRedirect(reverse('Evento:indice'))
+                    else:
+                        err="Ya existe un evento de clausura en el CLEI"
                 elif evento_tipo == 'taller':
                     evento = Taller()
                     armarEntidad(evento)

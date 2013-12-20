@@ -1,1 +1,14 @@
-<h1>Lista de Articulos</h1>
+<h1>Lista de Articulos:</h1>
+
+<a href = "{% url 'Articulo:mostrarFormArticulo' %}"> Crear un nuevo articulo </a>
+
+{% if articulos %}
+	<ul>
+	{% for articulo in articulos %}
+		<li><a href= "{% url 'Articulo:detalle' articulo.id %}">{{articulo.titulo}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay articulos disponibles </p>
+{% endif %}
+
