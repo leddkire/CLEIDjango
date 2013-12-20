@@ -37,7 +37,17 @@ def comprobarEmailComite(request):
             if per == None:
                 formPersonaComite = PersonaComiteForm(initial={'correo': correoForm})
             else:
-                formPersonaComite = PersonaComiteForm(initial={'nombre': per.nombre, 'apellido': per.apellido,'correo': correoForm, 'dirpostal': per.dirpostal, 'institucion':per.institucion, 'telefono': per.telefono, 'pais': per.pais, 'pagina': per.pagina})
+                try:
+                    com = Comite.objects.get(correo = correoForm)
+                except Comite.DoesNotExists:
+                    com = None
+                if com:
+                    form = CorreoForm()
+                    return render(request, 'Comite/comprobarEmailComite.html', 
+                  {'form':form, 
+                   'error_message' : "El email que introdujo ya esta siendo utilizado para otro miembro del comite"})
+                else:
+                    formPersonaComite = PersonaComiteForm(initial={'nombre': per.nombre, 'apellido': per.apellido,'correo': correoForm, 'dirpostal': per.dirpostal, 'institucion':per.institucion, 'telefono': per.telefono, 'pais': per.pais, 'pagina': per.pagina})
 
             return render(request, 'Comite/crearComite.html', {'formPersonaComite':formPersonaComite,})
         else:
