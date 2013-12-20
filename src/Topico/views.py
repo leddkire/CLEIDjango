@@ -5,6 +5,7 @@ from django.template import RequestContext, loader
 from Topico.models import Topico
 from django.core.urlresolvers import reverse
 from Topico.forms import TopicoForm
+from funciones import existe
 
 def indice(request):
     topicos= Topico.objects.all()
@@ -19,7 +20,7 @@ def indice(request):
 def mostrarFormTopico(request):
     form = TopicoForm()
     return render(request, 'Topico/crearTopico.html', {'form':form})
-
+    
 def crearTopico(request):
     def armarEntidad(topico):
         topico.nombre = form.cleaned_data['nombre']
@@ -27,13 +28,16 @@ def crearTopico(request):
     if request.method == 'POST':
         form = TopicoForm(request.POST)
         if form.is_valid():
-            topico = Topico()
-            armarEntidad(topico)
-            return HttpResponseRedirect(reverse('Topico:indice'))
+            if not(existe(form.cleaned_data['nombre'])):
+                topico = Topico()
+                armarEntidad(topico)
+                return HttpResponseRedirect(reverse('Topico:indice'))
+            else:
+                error_message="Ya existe un topico con este nombre."
         else:
-            form = EventoForm()
-            
-    return render(request, 'Topico/indice.html', 
+            error_message="No se lleno el formulario correctamente.",
+    form = TopicoForm()        
+    return render(request, 'Topico/crearTopico.html', 
                   {'form':form, 
-                   'error_message' : "No se lleno el formulario correctamente.",
+                   'error_message' :error_message,
                    })
