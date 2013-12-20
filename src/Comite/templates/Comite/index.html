@@ -1,0 +1,13 @@
+<h1> Lista de personas en el comite : </h1>
+
+<a href="{% url 'Comite:mostrarFormComprobar' %}"> Crear una nueva persona miembro del comite </a>
+
+{% if comite %}
+	<ul>
+	{% for top in comite %}
+		<li>{{top.correo}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay personas del comite agregadas </p>
+{% endif %}
