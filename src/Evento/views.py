@@ -66,7 +66,7 @@ def crear(request, evento_tipo):
     if request.method == 'POST':
         form = EventoForm(request.POST)
         if form.is_valid():
-            if not existe(form.cleaned_data['titulo']):
+            if not(existe(form.cleaned_data['titulo'])):
                 if evento_tipo == 'apertura':
                     evento = Apertura()
                     armarEntidad(evento)
@@ -92,10 +92,11 @@ def crear(request, evento_tipo):
                     armarEntidad(evento)
                     return HttpResponseRedirect(reverse('Evento:indice'))
             else:
-                error_message ="Un evento con este titulo ya existe."
+                err ="Un evento con este titulo ya existe."
+                
         else:
-            error_mesage = "No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida." 
-                   
+            err = "No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida." 
+    error_message = err            
     form = EventoForm()        
     return render(request, 'Evento/mostrarFormEvento.html', 
                   {'form':form, 
