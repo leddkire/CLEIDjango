@@ -18,6 +18,14 @@ def indice(request):
             'comite'    : comite,
     })
     return render(request, 'Comite/index.html', context)
+#
+#Vista encargada de mostrar los detalles de las personas dal comite
+#
+def detalle(request, comite_correo):
+    persona = get_object_or_404(Persona,pk=comite_correo)
+    comite = get_object_or_404(Comite,correo=comite_correo)
+    
+    return render(request, 'Comite/detalle.html', {'comite':comite, 'persona':persona})
 
 def mostrarFormComprobar(request):
     form = CorreoForm()

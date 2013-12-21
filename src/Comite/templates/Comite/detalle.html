@@ -1,0 +1,22 @@
+<h1> Informacion acerca del miembro del comite:</h1>
+
+<p><strong>Nombre: </strong>{{ persona.nombre }}</p>
+<p><strong>Apellido: </strong>{{ persona.apellido}}</p>
+<p><strong>Correo: </strong>{{ persona.correo}}</p>
+<p><strong>Dirección postal: </strong>{{persona.dirpostal}}</p>
+<p><strong>Institución: </strong>{{ persona.institucion }}</p>
+<p><strong>Teléfono: </strong>{{ persona.telefono}}</p>
+<p><strong>País: </strong>{{ persona.pais}}</p>
+<p><strong>Página: </strong>{{persona.pagina}}</p>
+
+<br />
+<hr color=#0000> 
+<br />
+
+{% if comite.presidente %}
+	<h2>Presidente del comité</h2>
+{% endif %}
+
+{% if comite.arbitro %}
+	<h2>Árbitro</h2>
+{% endif %}

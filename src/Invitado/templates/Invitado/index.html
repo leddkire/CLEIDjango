@@ -5,7 +5,7 @@
 {% if invitado %}
 	<ul>
 	{% for top in invitado %}
-		<li>{{top.correo}}</a></li>
+		<li><a href="{% url 'Invitado:detalle' top.correo %}">{{top.correo}}</a></li>
 	{% endfor %}
 	</ul>
 {% else %}

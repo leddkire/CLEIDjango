@@ -18,6 +18,16 @@ def indice(request):
     })
     return render(request, 'Invitado/index.html', context)
 
+#
+#Vista encargada de mostrar los detalles de las personas invitadas
+#
+def detalle(request, invitado_correo):
+    persona = get_object_or_404(Persona,pk=invitado_correo)
+    invitado = get_object_or_404(Invitado,correo=invitado_correo)
+    
+    return render(request, 'Invitado/detalle.html', {'invitado':invitado, 'persona':persona})
+
+
 def mostrarFormComprobar(request):
     form = CorreoForm()
     return render(request, 'Invitado/comprobarEmailInvitado.html', {'form':form})
