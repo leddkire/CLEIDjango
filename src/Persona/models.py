@@ -12,9 +12,6 @@ class Persona(models.Model):
     pais = models.CharField(max_length=100)
     pagina = models.CharField(max_length=100)
 
-    class Meta:
-        abstract = True
-
     def __unicode__(self):
         return self.nombre and self.apellido and self.correo
     

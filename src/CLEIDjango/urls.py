@@ -8,6 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^persona/', include('Persona.urls', namespace = "Persona")),
+    url(r'^inscripcion/', include('Inscripcion.urls', namespace = "Inscripcion")),
     
     # Examples:
     # url(r'^$', 'CLEIDjango.views.home', name='home'),
