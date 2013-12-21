@@ -1,0 +1,13 @@
+<h1> Lista de personas invitadas : </h1>
+
+<a href="{% url 'Invitado:mostrarFormComprobar' %}"> Agregar un nuevo invitado </a>
+
+{% if invitado %}
+	<ul>
+	{% for top in invitado %}
+		<li>{{top.correo}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay invitados agregados </p>
+{% endif %}
