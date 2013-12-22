@@ -1,8 +1,6 @@
 from django.forms import ModelForm
 from django import forms
 
-import datetime
-
 from Inscripcion.models import Inscripcion
 from Persona.forms import PersonaForm 
 
