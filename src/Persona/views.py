@@ -4,32 +4,22 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 
 # Create your views here.
-from Persona.models import Participante
+from Persona.models import Persona
 from Persona.forms import PersonaForm
 
 def indice(request):
-    participante = Participante.objects.all()
+    persona = Persona.objects.all()
     context = RequestContext(request, {
-            'participante'    : participante,
+            'persona'    : persona,
     })
     return render(request, 'Persona/index.html', context)
 
 
-def detalle(request, persona_id, persona_tipo):
-    if(persona_tipo == 'participante'):
-        persona = get_object_or_404(Apertura,pk=persona_id)
-        return render(request, 'Persona/detalle.html', {'persona':persona, 'persona_id': persona_id})
-    else:
-        return HttpResponse("Error al definir una persona.")
-
-def definirPersona(request):
-    return render(request, 'Persona/definirPersona.html', {})
-
-def mostrarFormPersona(request, persona_tipo):
+def mostrarFormPersona(request):
     form = PersonaForm()
-    return render(request, 'Persona/mostrarFormPersona.html', {'form':form,'persona_tipo':persona_tipo,})
+    return render(request, 'Persona/mostrarFormPersona.html', {'form':form,})
 
-def crear(request, persona_tipo):
+def crear(request):
     def armarEntidad(persona):
         persona.nombre = form.cleaned_data['nombre']
         persona.apellido = form.cleaned_data['apellido']
@@ -43,14 +33,9 @@ def crear(request, persona_tipo):
     if request.method == 'POST':
         form = PersonaForm(request.POST)
         if form.is_valid():
-            if(persona_tipo == 'participante'):
-                persona = Participante()
-                armarEntidad(persona)
-                return HttpResponseRedirect(reverse('Persona:indice'))
-        else:
-            form = PersonaForm()
+            persona = Persona()
+            armarEntidad(persona)
+            return HttpResponseRedirect(reverse('Persona:indice'))
             
     return render(request, 'Persona/mostrarFormPersona.html', 
-                  {'form':form, 
-                   'error_message' : "No se lleno el formulario correctamente. La direccion postal tiene que ser un entero.",
-                   'persona_tipo':persona_tipo,})
+                  {'form':form,})

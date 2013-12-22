@@ -1,7 +1,7 @@
-<h1> Crear una nueva persona: </h1>
+<h1> Crear una nueva inscripci&oacute;n: </h1>
 
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
-<form action="{% url 'Persona:crear' %}" method="post">
+<form action="{% url 'Inscripcion:crear' %}" method="post">
 {% csrf_token %}
         {{form.as_p}}
         <input type = "submit" value="Crear"/>

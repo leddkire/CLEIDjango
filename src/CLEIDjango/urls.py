@@ -9,7 +9,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^persona/', include('Persona.urls', namespace = "Persona")),
     url(r'^inscripcion/', include('Inscripcion.urls', namespace = "Inscripcion")),
-    
     # Examples:
     # url(r'^$', 'CLEIDjango.views.home', name='home'),
     # url(r'^CLEIDjango/', include('CLEIDjango.foo.urls')),
@@ -18,7 +17,6 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/', include(admin.site.urls)),
 
 )
