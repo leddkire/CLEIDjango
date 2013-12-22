@@ -1,8 +1,0 @@
-<h1> Crear una nueva evaluacion: </h1>
-
-{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
-<form action="{% url 'Evaluacion:indice'%}" method="post">
-{% csrf_token %}
-	{{form.as_p}}
-	<input type = "submit" value="Crear"/>
-</form>

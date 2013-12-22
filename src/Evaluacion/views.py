@@ -2,12 +2,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext, loader
-from Evaluacion.models import Evaluacion,Arbitro,Nota
+from Evaluacion.models import Evaluacion
 from django.core.urlresolvers import reverse
 from Evaluacion.forms import EvaluacionForm
-from Articulo.models import Articulo
-from funciones import existe
-from Comite.models import Comite
+
 
 def indice(request):
     evaluaciones= Evaluacion.objects.all()
@@ -16,80 +14,6 @@ def indice(request):
     })
     return render(request,'Evaluacion/index.html',context)
 
-def detalle(request, tituloArt):
-    articulo = get_object_or_404(Articulo,titulo=tituloArt)
-    return render(request, 'Comite/detalle.html', {'articulo':articulo})
-
 def mostrarFormEvaluacion(request):
-    form = EvaluacionForm(initial={'articulo':"Probando"})
-    return render(request, 'Evaluacion/crearEvaluacion.html', {'form':form} )
-
-def mostrarArbitro(request):
-    #arbitros = Arbitro.objects.all()
-    arbitros = Comite.objects.filter(arbitro=True) 
-    context=RequestContext(request, {
-            'arbitros' : arbitros,
-    })
-    return render(request, 'Evaluacion/mostrarArbitro.html', context )
-
-def mostrarArticulo(request,arbitro_id):
-    articulos = Articulo.objects.all()
-    context=RequestContext(request, {
-            'articulos' : articulos,
-            'arbitro_id': arbitro_id,
-    })
-    return render(request, 'Evaluacion/mostrarArticulo.html', context )
-
-def mostrarFormEvaluar(request,articulo_id,arbitro_id):#,articulo_id):
-    articulo = get_object_or_404(Articulo,pk=articulo_id)
-    arbitro = get_object_or_404(Comite,pk=arbitro_id)
     form = EvaluacionForm()
-    context=RequestContext(request, {
-            'articulo' : articulo,
-            'arbitro': arbitro,
-            'form': form,
-    })
-    return render(request, 'Evaluacion/mostrarFormEvaluacion.html', context )
-
-def crearEvaluacion(request,arbitro,articulo):
-    def armarEntidad(evaluacion):
-        #Obtenemos el objeto articulo con el nombre
-        
-        #artObj=Articulo(titulo=articulo)
-        #arbitroObj=get_object_or_404(Comite,correo=arbitro)
-        arbitroObj=Comite.objects.get(correo=arbitro)
-        evaluacion.arbitros.add(arbitroObj)
-        numero=form.cleaned_data['valor']
-        #valorNota,creado=Nota.objects.get_or_create(valor=numero)
-        valorNota=Nota(valor=numero)
-        valorNota.save()
-        evaluacion.notas.add(valorNota)
-        evaluacion.promedio = 0.0
-        evaluacion.save()
-    if request.method =='POST':
-        form = EvaluacionForm(request.POST)
-        if form.is_valid():
-            if not(existe(arbitro,articulo)):
-                artObj=get_object_or_404(Articulo,titulo=articulo) 
-                try:
-                    evaluacion=Evaluacion.objects.get(articulo=artObj)
-                except Evaluacion.DoesNotExist:
-                    evaluacion = Evaluacion(articulo=artObj)
-                    evaluacion.save()
-                #evaluacion.articulo=artObj
-                #
-                armarEntidad(evaluacion)
-                return HttpResponseRedirect(reverse('Evaluacion:indice'))
-            else:
-                error_message="Ya el arbitro evaluo este articulo"
-        else:
-            error_message="No se selecciono la nota"
-    #verificar aqui si existe 
-    form=EvaluacionForm()
-    context=RequestContext(request, {
-            'arbitro': arbitro,
-            'articulo' : articulo,
-            'form': form,
-            'error_message' :error_message,
-    })
-    return render(request,'Evaluacion/mostrarFormEvaluacion.html',context)
+    return render(request, 'Evaluacion/crearEvaluacion.html', {'form':form} )
