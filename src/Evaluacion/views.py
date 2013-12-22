@@ -16,9 +16,20 @@ def indice(request):
     })
     return render(request,'Evaluacion/index.html',context)
 
-def detalle(request, tituloArt):
-    articulo = get_object_or_404(Articulo,titulo=tituloArt)
-    return render(request, 'Comite/detalle.html', {'articulo':articulo})
+def detalle(request, clave):
+    evaluacion = Evaluacion.objects.get(pk=clave)
+    notas= evaluacion.notas.all()
+    
+    arbitros = evaluacion.arbitros.all()
+    promedio= evaluacion.promedio
+    titulo = evaluacion.articulo.titulo
+    context=RequestContext(request, {
+            'notas' : notas,
+            'arbitros' : arbitros,
+            'promedio' : promedio,
+            'titulo' : titulo,
+    })
+    return render(request, 'Evaluacion/detalle.html', context)
 
 def mostrarFormEvaluacion(request):
     form = EvaluacionForm(initial={'articulo':"Probando"})

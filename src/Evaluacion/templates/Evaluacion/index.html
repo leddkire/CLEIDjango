@@ -4,7 +4,7 @@
 {% if evaluaciones %}
 	<ul>
 	{% for eval in evaluaciones %}
-		<li><a href="{% url 'Evaluacion:indice' %}">{{eval}}	</a></li>
+		<li><a href="{% url 'Evaluacion:detalle' eval.id %}">{{eval}}</a></li>
 		
 	{% endfor %}
 	</ul>
