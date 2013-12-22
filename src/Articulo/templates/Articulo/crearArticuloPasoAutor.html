@@ -7,7 +7,7 @@ function mostrarAutor (){
 </SCRIPT>
 <h3> Paso 2/3: Nombrar autores: </h3>
 
-{% if error_message %} {{error_message}} {% endif %}
+{% if error_message %}<p style="color:red"> {{error_message}}</p> {% endif %}
 {%if autores %}
 	<p>Autores:</p>
 	<ul>

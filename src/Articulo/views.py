@@ -22,13 +22,24 @@ def indice(request):
 
 def detalle(request, articulo_id):
     articulo = get_object_or_404(Articulo,pk=articulo_id)
-    return render(request, 'Articulo/detalle.html', {'articulo':articulo})
+    palabrasClavesLista = articulo.palabrasClaves.split(',')
+    return render(request, 'Articulo/detalle.html', {'articulo':articulo,
+                                                     'palabrasClavesLista':palabrasClavesLista,})
 
 def crearArticuloPasoAutor(request):
     articulo = Articulo()
     if request.method == 'POST':
         form = ArticuloForm(request.POST)
         if form.is_valid():
+            if Articulo.objects.filter(titulo = form.cleaned_data['titulo']).exists():
+               error_message='Un articulo con este titulo ya existe'
+               return render(request,'Articulo/crearArticuloPasoDG.html',{'form':form,
+                                                                          'error_message':error_message})
+            
+            if(len(form.cleaned_data['palabrasClaves'].split(',')) > 5):
+                error_message = 'El articulo no puede tener mas de 5 palabras claves'
+                return render(request,'Articulo/crearArticuloPasoDG.html',{'form':form,
+                                                                          'error_message':error_message})
             articulo.titulo = form.cleaned_data['titulo']
             articulo.palabrasClaves = form.cleaned_data['palabrasClaves']
             articulo.resumen = form.cleaned_data['resumen']
@@ -141,10 +152,16 @@ def crearTopico(request, articulo_id):
         form = TopicoForm(request.POST)
         articulo = Articulo.objects.get(pk = articulo_id)
         if form.is_valid():
-            
             topico, topicoCreado= Topico.objects.get_or_create(nombre = form.cleaned_data['nombre'])
-            articulo.topicos.add(topico)
+            
             topicos = articulo.topicos.all()
+            if articulo.topicos.filter(nombre = form.cleaned_data['nombre']).exists():
+                error_message = 'Ya existe este topico en la lista'
+                return render(request, 'Articulo/crearArticuloPasoTopico.html',{'topicos':topicos,
+                                                                            'articulo_id':articulo_id,
+                                                                            'form':form,
+                                                                            'error_message':error_message})
+            articulo.topicos.add(topico)
             return render(request, 'Articulo/crearArticuloPasoTopico.html',{'topicos':topicos,
                                                                             'articulo_id':articulo_id,
                                                                             'form':form})
@@ -153,5 +170,4 @@ def crearTopico(request, articulo_id):
             form = TopicoForm()
             return render(request, 'Articulo/crearArticuloPasoTopico.html',{'topicos':topicos,
                                                                             'articulo_id': articulo_id,
-                                                                            'form':form,
-                                                                            'error_message': 'Ya existe un topico'})                                                                 
+                                                                            'form':form,})                                                                 
