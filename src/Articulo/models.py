@@ -10,6 +10,9 @@ class Articulo(models.Model):
     texto = models.CharField(max_length=300, null =True)
     autores = models.ManyToManyField(Autor, null = True)
     topicos = models.ManyToManyField(Topico, null =True)
+    aceptado = models.BooleanField(default = False)
+    aceptable = models.BooleanField(default = False)
+    empatado = models.BooleanField(default = False)
     
     def __unicode__(self):
         return self.titulo

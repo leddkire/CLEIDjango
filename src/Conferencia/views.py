@@ -7,6 +7,12 @@ from django.shortcuts import redirect
 # Create your views here.
 from Conferencia.models import Conferencia
 from Conferencia.forms import ConferenciaForm
+from funciones import getArticulosAceptados
+from Evaluacion.models import Evaluacion
+from funciones import getEvaluacionesDeArticulo
+from funciones import getArticuloPorId
+from funciones import getArticulosAceptables
+from funciones import getDatosConferencia
 
 def indice(request):
     conferencia = Conferencia.objects.all()
@@ -74,3 +80,94 @@ def editarDatosConferencia(request):
     return render(request, 'Conferencia/editarDatosConferencia.html', 
                   {'formConferencia':form, 
                    'error_message' : "No se lleno el formulario correctamente."})
+    
+def mostrarTiposDeArticulos(request):
+    articulo = getArticulosAceptados()
+
+    context = RequestContext(request, {
+            'articulo'    : articulo,
+    })
+    return render(request, 'Conferencia/tiposDeSeleccionar.html', context)
+#
+# Funcion que realiza las consultas necesarias para determinar si un articulo es aceptable.
+# Devuelve todos los articulos que: tienen promedio mayor o igual a 2.00 y tienen dos evaluaciones
+# o mas.
+#
+def setArticulosAceptables():
+    listaArticulos = []
+    #Se toman todos los articulos que tienen promedio mayor a 2.00
+    try:
+        #Article.objects.all().annotate(arbitros_count=Count('keywords__keyword'))
+        evaluacion = Evaluacion.objects.filter(promedio__gt = 2)
+        #Si hubo resultados, se hace una iteracion para ver si tiene minimo dos evaluaciones.
+        if evaluacion:
+            for ev in evaluacion:
+                if ev.arbitros.all().count() >= 2:
+                    artAceptable = getArticuloPorId(ev.articulo.pk)
+                    if artAceptable:
+                        artAceptable.aceptable = True
+                        artAceptable.save()
+                        listaArticulos.append(artAceptable)
+    except Evaluacion.DoesNotExist:
+        evaluacion = None
+    return listaArticulos
+
+def calcular_ocurrencia(promedio,lista):
+        ocurrencia=0
+        for element in lista:
+            if getEvaluacionesDeArticulo(element.pk).promedio==promedio:
+                ocurrencia+=1
+        return ocurrencia
+    
+# Este metodo retorna una lista de los articulos que fueron aceptados por CLEI pero que se encuentran
+# dentro de la lista de empatados
+def get_empatados(aceptados, aceptables):
+        empatados=[]+aceptables
+        for element in aceptados:
+            empatados.remove(element)
+        return empatados
+
+def generarAceptados(aceptables):
+    # Se verifica si el maximo de articulos es mayor que la longitud de la lista de aceptables
+    # si esto pasa entonces la lista de aceptables pasa a ser la lista de aceptados, sino se busca
+    # cual es la nueva lista de aceptados
+    maxarticulos = getDatosConferencia()
+    if maxarticulos>=len(aceptables):
+        return aceptables
+    else:
+        if maxarticulos > 0:
+            aceptados=[]
+            i=0
+            while i<maxarticulos:
+                aceptados.append(aceptables[i])
+                i+=1
+            # ultimo es el promedio minimo contenido en la lista de aceptados
+            ultimo=aceptados[maxarticulos-1]
+            # se cuenta cuantas veces aparece el promedio en la lista de aceptados
+            numvecesaccept=calcular_ocurrencia(getEvaluacionesDeArticulo(ultimo.pk).promedio, aceptados)
+            # se cuenta cuantas veces aparece el promedio en la lista de aceptables
+            numvecesaceptables=calcular_ocurrencia(getEvaluacionesDeArticulo(ultimo.pk).promedio, aceptables)
+            # si el numero de veces de aceptados es distinto del numero de veces de aceptables
+            # se procede a eliminar todos los valores que fueron admitidos en la lista de aceptados
+            if numvecesaccept!=numvecesaceptables:
+                while numvecesaccept>0:
+                    aceptados.remove(ultimo)
+                    numvecesaccept-=1
+        else:
+            return []
+    return aceptados
+      
+def aceptablesNota(request):
+    listaAceptables = setArticulosAceptables()
+    listaAceptables = sorted(listaAceptables,key= lambda element: getEvaluacionesDeArticulo(element.pk).promedio, reverse = True)
+    #articulosAceptables = getArticulosAceptables()
+    articulosAceptados = generarAceptados(listaAceptables)
+    articuloEmpatado = get_empatados(articulosAceptados, listaAceptables)
+    #setArticulosAceptados(articulosAceptables)
+    context = RequestContext(request, {
+            'articuloAceptable'    : listaAceptables,
+            'articuloAceptado'     : articulosAceptados,
+            'articuloEmpatado'     : articuloEmpatado,
+    })
+    return render(request, 'Conferencia/aceptables.html', context)
+
