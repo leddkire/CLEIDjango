@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from Evaluacion.models import Evaluacion
+
+admin.site.register(Evaluacion)

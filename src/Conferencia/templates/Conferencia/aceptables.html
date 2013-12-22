@@ -1,0 +1,32 @@
+<h1>Artículos aceptables:</h1>
+{% if articuloAceptable %}
+	<ul>
+	{% for top in articuloAceptable %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos aceptables</h2>
+{% endif %}
+<hr />
+<h1>Artículos aceptados:</h1>
+{% if articuloAceptado %}
+	<ul>
+	{% for top in articuloAceptado %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos aceptados</h2>
+{% endif %}
+<hr />
+<h1>Artículos empatados:</h1>
+{% if articuloEmpatado %}
+	<ul>
+	{% for top in articuloEmpatado %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos empatados</h2>
+{% endif %}

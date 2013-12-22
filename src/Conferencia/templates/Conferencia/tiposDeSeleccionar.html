@@ -1,0 +1,16 @@
+{% if articulo %}
+	<h2>Artículos seleccionados para CLEI</h2>
+	<ul>
+	{% for top in articulo %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No se han seleccionado artículos para el CLEI</h2>
+{% endif %}
+<h1>Seleccionar Artículos: </h1>
+<h2>Escoja la forma de seleccionar artículos:</h2>
+<ul>
+	<li><a href="{% url 'Conferencia:aceptablesNota' %}">Por puntuación</a></li>
+	<li><a href="{% url 'Conferencia:aceptablesNota' %}">Proporcional a los tópicos</a></li>
+</ul>
