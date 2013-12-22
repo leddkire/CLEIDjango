@@ -4,3 +4,17 @@
 <p><strong>Palabras Claves: </strong>{{ articulo.palabrasClaves}}</p>
 <p><strong>Resumen: </strong>{{ articulo.resumen}}</p>
 <p><strong>Texto: </strong>{{articulo.texto }}</p>
+
+<p><strong>Autores:</strong></p>
+<ul>
+{% for autor in articulo.autores.all %}
+	<li>{{autor.persona.nombre}} {{autor.persona.apellido}} - {{autor.persona.correo}}</li>
+{% endfor %}
+</ul>
+
+<p><strong>Topicos:</strong></p>
+<ul>
+{% for topico in articulo.topicos.all %}
+	<li>{{topico}}</li>
+{% endfor %}
+</ul>

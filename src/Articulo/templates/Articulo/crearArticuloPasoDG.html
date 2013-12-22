@@ -1,5 +1,7 @@
 <h3> Paso 1/3: Datos generales del articulo:</h3>
 
+{% if error_message %} <p style="color:red"> {{error_message}} </p> {% endif %}
+
 <form name="articulo" action="{% url 'Articulo:crearArticuloPasoAutor' %}" method="post">
 {% csrf_token %}
 	{{form.as_p}}

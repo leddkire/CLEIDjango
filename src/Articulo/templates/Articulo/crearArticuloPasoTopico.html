@@ -8,6 +8,8 @@ function mostrarTopico(){
 }
 </SCRIPT>
 
+{% if error_message %} <p style="color:red"> {{error_message}} </p> {% endif %}
+
 {%if topicos %}
 	<p>Topicos:</p>
 	<ul>
