@@ -1,9 +1,40 @@
 <h1>Crear un articulo </h1>
 
+<SCRIPT LANGUAGE = "JavaScript">
+
+document.getElementById("mostrarAutor").onclick = function (){
+	var autorForm = document.autor
+	autorForm.style.display = ''
+}
+
+
+</SCRIPT>
+
 {% if error_message %} <p> {{error_message}} </p> {% endif %}
 
-<form action="{% url 'Articulo:crear' %}" method="post">
+<form name="articulo" action="{% url 'Articulo:crear' %}" method="post">
 {% csrf_token %}
 	{{form.as_p}}
-	<input type="submit" value="Crear"/>
+	{%if autoresFormSet %}
+	{{ autoresFormSet.management_form}}
+		<p>Autores:</p>
+		<ul>
+		{% for autor in autoresFormSet %}
+			<li>
+				{{autor.nombre}} {{autor.apellido}} {{autor.correo}} 
+				{% if autoresFormSet.can_delete %}
+					{{form.DELETE }}
+				{% endif %}
+			</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>El articulo no tiene autores </p>
+	{% endif %}
+	<div id ="mostrarAutor"><a href="#">Agregar nuevo autor</a></div>
+	<form name ="autor" style="display:none" action="{% url 'Autor:crear' %} method="post">
+		{{autorForm.as_p}}
+		<input type = "submit" value="Asignar Autor"/>
+	</form>
+	<input type="submit" value="Crear Articulo"/>
 </form>

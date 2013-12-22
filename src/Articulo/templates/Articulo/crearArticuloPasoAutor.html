@@ -1,0 +1,45 @@
+<SCRIPT LANGUAGE = "JavaScript">
+
+function mostrarAutor (){
+	var email = document.email;
+	email.style.display = '';
+}
+</SCRIPT>
+<h3> Paso 2/3: Nombrar autores: </h3>
+
+{% if error_message %} {{error_message}} {% endif %}
+{%if autores %}
+	<p>Autores:</p>
+	<ul>
+	{% for autor in autores %}
+		<li>
+			{{autor.persona.nombre}} {{autor.persona.apellido}} {{autor.persona.correo}} 
+		</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>El articulo no tiene autores. Se necesita al menos un autor para registrar el articulo. </p>
+{% endif %}
+
+
+
+<button type="button" onclick = "mostrarAutor()">Agregar nuevo autor</button>
+<form action="{% url 'Articulo:revisarAutor' articulo_id %}" method="post" name ="email" style="display:none" >
+	{% csrf_token %}
+	{{correoForm.as_p}}
+	<input type="submit" value="Revisar"/>
+</form>
+{% if autorForm %}
+<form action="{% url 'Articulo:crearAutor' articulo_id %}" method="post" >
+	{% csrf_token %}
+	{{autorForm.as_p}}
+	<input type="submit" value="Asignar Autor"/>
+</form>
+{% endif %}
+
+{% if autores %}	
+<form action="{% url 'Articulo:crearArticuloPasoTopico' articulo_id %}" method="post">
+	{% csrf_token %} 
+	<input type="submit" value="Siguiente"/>
+</form>
+{% endif %}

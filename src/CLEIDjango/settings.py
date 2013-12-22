@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'Comite',
     'Evaluacion',
     'Invitado',
+    'Autor',
     'Conferencia',
 )
 
