@@ -1,7 +1,12 @@
 <h1> Informacion acerca del articulo:</h1>
 
 <p><strong>Titulo: </strong>{{ articulo.titulo }}</p>
-<p><strong>Palabras Claves: </strong>{{ articulo.palabrasClaves}}</p>
+<p><strong>Palabras Claves: </strong></p>
+<ul>
+{% for palabra in palabrasClavesLista %}
+	<li>{{ palabra }} </li>
+{% endfor %}
+</ul>
 <p><strong>Resumen: </strong>{{ articulo.resumen}}</p>
 <p><strong>Texto: </strong>{{articulo.texto }}</p>
 
