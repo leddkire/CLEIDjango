@@ -10,6 +10,8 @@ from Comite.forms import CorreoForm
 from Invitado.forms import PersonaInvitadoForm
 from Persona.models import Persona
 from Persona.forms import PersonaForm
+from funciones import getPersona
+from funciones import getInvitado
 
 def indice(request):
     invitado = Invitado.objects.all()
@@ -18,9 +20,20 @@ def indice(request):
     })
     return render(request, 'Invitado/index.html', context)
 
+#
+#Vista encargada de mostrar los detalles de las personas invitadas
+#
+def detalle(request, invitado_correo):
+    persona = get_object_or_404(Persona,pk=invitado_correo)
+    invitado = get_object_or_404(Invitado,correo=invitado_correo)
+    
+    return render(request, 'Invitado/detalle.html', {'invitado':invitado, 'persona':persona})
+
+
 def mostrarFormComprobar(request):
     form = CorreoForm()
     return render(request, 'Invitado/comprobarEmailInvitado.html', {'form':form})
+
 
 def comprobarEmailInvitado(request):
     form = ''
@@ -28,18 +41,11 @@ def comprobarEmailInvitado(request):
         form = CorreoForm(request.POST)
         if form.is_valid():
             correoForm = form.cleaned_data['correo']
-            try:
-                per = Persona.objects.get(correo=correoForm)
-            except Persona.DoesNotExist:
-                per = None 
-                
+            per = getPersona(correoForm)   
             if per == None:
                 formPersonaInvitado = PersonaInvitadoForm(initial={'correo': correoForm})
             else:
-                try:
-                    inv = Invitado.objects.get(correo = correoForm)
-                except Invitado.DoesNotExist:
-                    inv = None
+                inv = getInvitado(correoForm)
                 if inv:
                     form = CorreoForm()
                     return render(request, 'Invitado/comprobarEmailInvitado.html', 
@@ -54,11 +60,10 @@ def comprobarEmailInvitado(request):
     return render(request, 'Invitado/comprobarEmailInvitado.html', 
                   {'form':form, 
                    'error_message' : "Coloque un email valido."})
-
-def crearInvitado(request):
-    form = ''
-    def armarEntidad(persona, invitado):
-
+    
+def armarEntidad(formPersonaInvitado):
+        persona = Persona()
+        invitado = Invitado()
         persona.nombre = formPersonaInvitado.cleaned_data['nombre']
         persona.apellido = formPersonaInvitado.cleaned_data['apellido']
         persona.correo = formPersonaInvitado.cleaned_data['correo']
@@ -69,18 +74,17 @@ def crearInvitado(request):
         persona.pagina = formPersonaInvitado.cleaned_data['pagina']
         creado = Persona.objects.get_or_create(nombre = persona.nombre, apellido = persona.apellido, correo = persona.correo, dirpostal = persona.dirpostal, institucion = persona.institucion,
                                                telefono = persona.telefono, pais = persona.pais, pagina = persona.pagina)
-        #persona.save()
         
         invitado.correo = persona
         invitado.cv = formPersonaInvitado.cleaned_data['cv']
         invitado.save()
+
+def crearInvitado(request):
            
     if request.method == 'POST':
         formPersonaInvitado = PersonaInvitadoForm(request.POST)
         if formPersonaInvitado.is_valid():
-            persona = Persona()
-            invitado = Invitado()
-            armarEntidad(persona, invitado)
+            armarEntidad(formPersonaInvitado)
             return HttpResponseRedirect(reverse('Invitado:indice'))
         else:
             form = PersonaInvitadoForm()

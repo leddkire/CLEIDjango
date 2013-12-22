@@ -19,4 +19,4 @@ class PersonaInvitadoForm(forms.Form):
     telefono = forms.CharField(max_length=100)
     pais = forms.CharField(max_length=100)
     pagina = forms.CharField(max_length=100)
-    cv = forms.CharField(max_length=500)
+    cv = forms.CharField(max_length=500, widget=forms.Textarea(attrs={'class':'special'}))

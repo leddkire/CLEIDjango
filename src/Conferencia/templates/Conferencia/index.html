@@ -1,0 +1,22 @@
+<h1> Bienvenido al sistema de CLEI: </h1>
+
+{% if conferencia %}
+	<ul>
+	{% for top in conferencia %}
+		<li><p> Anio: {{top.anio}} <br /> 
+			Duracion: {{top.duracion}} <br />
+			Pais: {{top.pais}} <br />
+			Cantidad de articulos: {{top.maxArticulos}}</p></li>
+	{% endfor %}
+	</ul>
+{% else %}
+
+	<p>Necesita agregar datos a la conferencia: </p>
+	<br />
+{% endif %}
+<a href="{% url 'Conferencia:mostrarFormConferencia' %}"> Editar los datos de la conferencia </a>
+<br />
+<a href="{% url 'Comite:indice' %}"> Integrantes del comite </a>
+<br />
+<a href="{% url 'Invitado:indice' %}"> Invitados </a>
+<br />

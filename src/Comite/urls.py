@@ -6,9 +6,9 @@ from Persona.models import Persona
 urlpatterns = patterns('',
     # /comite/
     url(r'^$', views.indice, name='indice'),
-    # /comite/crearComite/
+    url(r'^(?P<comite_correo>[^@]+@[^@]+\.[^@]+)/$', views.detalle, name='detalle'),
     url(r'^mostrarFormComprobar/$',views.mostrarFormComprobar, name='mostrarFormComprobar'),
     url(r'^comprobarEmailComite/$',views.comprobarEmailComite, name='comprobarEmailComite'),
     url(r'^crearComite/$', views.crearComite, name='crearComite'),
-   
+    
 )

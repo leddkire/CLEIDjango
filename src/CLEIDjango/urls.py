@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^persona/', include('Persona.urls', namespace="Persona")),
     url(r'^comite/', include('Comite.urls', namespace="Comite")),
     url(r'^invitado/', include('Invitado.urls', namespace="Invitado")),
+    url(r'^conferencia/', include('Conferencia.urls', namespace="Conferencia")),
     #url(r'^evaluacion/', include('Evaluacion.urls', namespace="Evaluacion")),
     # Examples:
     # url(r'^$', 'CLEIDjango.views.home', name='home'),

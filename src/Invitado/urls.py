@@ -3,9 +3,9 @@ from django.conf.urls import patterns, url
 from Invitado import views
 
 urlpatterns = patterns('',
-    # /comite/
+    # /invitado/
     url(r'^$', views.indice, name='indice'),
-    # /comite/crearComite/
+    url(r'^(?P<invitado_correo>[^@]+@[^@]+\.[^@]+)/$', views.detalle, name='detalle'),
     url(r'^mostrarFormComprobar/$',views.mostrarFormComprobar, name='mostrarFormComprobar'),
     url(r'^comprobarEmailInvitado/$',views.comprobarEmailInvitado, name='comprobarEmailInvitado'),
     url(r'^crearInvitado/$', views.crearInvitado, name='crearInvitado'),

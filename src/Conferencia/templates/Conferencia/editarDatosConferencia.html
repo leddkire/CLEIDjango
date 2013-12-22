@@ -1,0 +1,11 @@
+<h1> Editar datos de CLEI: </h1>
+
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+
+<form action="{% url 'Conferencia:editarDatosConferencia' %}" method="post">
+	{% csrf_token %}
+
+     {{ formConferencia.as_p }}
+
+     <p><button type="submit">Guardar Cambios</button></p>
+ </form>

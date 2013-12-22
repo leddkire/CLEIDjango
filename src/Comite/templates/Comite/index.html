@@ -5,9 +5,11 @@
 {% if comite %}
 	<ul>
 	{% for top in comite %}
-		<li>{{top.correo}}</a></li>
+		<li><a href="{% url 'Comite:detalle' top.correo %}">{{top.correo}} - {{top.nombre}} {{top.apellido}}</a></li>
 	{% endfor %}
 	</ul>
 {% else %}
 	<p>No hay personas del comite agregadas </p>
 {% endif %}
+
+<a href="{% url 'Conferencia:indice' %}"> Volver a la página principal</a>
