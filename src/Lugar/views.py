@@ -25,6 +25,16 @@ def eventosDeLugar(request, lugar_id):
     return HttpResponse("Estas viendo los eventos asignados a este lugar: %s" %lugar_id)
 
 def mostrarFormEvento(request, lugar_id, evento_tipo):
+    if evento_tipo =='apertura':
+        if existeApertura():
+            error_message = 'Ya existe un evento de apertura en el CLEI'
+            return render(request, 'Lugar/definirEvento.html',{'lugar_id':lugar_id,
+                                                                'error_message':error_message})
+    if evento_tipo =='clausura':
+        if existeClausura():
+            error_message = 'Ya existe un evento de clausura en el CLEI'
+            return render(request, 'Lugar/definirEvento.html',{'lugar_id':lugar_id,
+                                                                'error_message':error_message})
     form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', {'form':form, 'lugar_id':lugar_id, 'evento_tipo':evento_tipo,})
 

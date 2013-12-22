@@ -52,6 +52,14 @@ def definirEvento(request):
     return render(request, 'Evento/definirEvento.html', {})
 
 def mostrarFormEvento(request, evento_tipo):
+    if evento_tipo =='apertura':
+        if existeApertura():
+            error_message = 'Ya existe un evento de apertura en el CLEI'
+            return render(request, 'Evento/definirEvento.html',{'error_message':error_message})
+    if evento_tipo =='clausura':
+        if existeClausura():
+            error_message = 'Ya existe un evento de clausura en el CLEI'
+            return render(request, 'Evento/definirEvento.html',{'error_message':error_message})
     form = EventoForm()
     return render(request, 'Evento/mostrarFormEvento.html', {'form':form,'evento_tipo':evento_tipo,})
 
