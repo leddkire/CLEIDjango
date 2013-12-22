@@ -38,40 +38,35 @@ def mostrarFormConferencia(request):
         formConferencia = ConferenciaForm()
     return render(request, 'Conferencia/editarDatosConferencia.html', {'formConferencia':formConferencia, })
 
-def editarDatosConferencia(request):
-    
-    def armarEntidad(conferencia):
-
-        conferencia.anio = formConferencia.cleaned_data['anio']
-        conferencia.duracion = formConferencia.cleaned_data['duracion']
-        conferencia.pais = formConferencia.cleaned_data['pais']
-        conferencia.maxArticulos = formConferencia.cleaned_data['maxArticulos']
+def armarEntidad(formConferencia):
+    conferencia = Conferencia()
+    conferencia.anio = formConferencia.cleaned_data['anio']
+    conferencia.duracion = formConferencia.cleaned_data['duracion']
+    conferencia.pais = formConferencia.cleaned_data['pais']
+    conferencia.maxArticulos = formConferencia.cleaned_data['maxArticulos']
         
-        try:
-            confe = Conferencia.objects.get(anio = conferencia.anio)
-        except Conferencia.DoesNotExist:
-            confe = None
+    try:
+        confe = Conferencia.objects.get(anio = conferencia.anio)
+    except Conferencia.DoesNotExist:
+        confe = None
 
-        if confe:
-            confe.anio = conferencia.anio
-            confe.duracion = conferencia.duracion
-            confe.pais = conferencia.pais
-            confe.maxArticulos = conferencia.maxArticulos
-            confe.save()
-        else:
-            existe = Conferencia.objects.all()
-            if not existe:
-                conferencia.save()   
-        #conf, creado = Conferencia.objects.get_or_create(anio = conferencia.anio, duracion = conferencia.duracion,
-         #                                          pais = conferencia.pais, maxArticulos = conferencia.maxArticulos)
-                   
-    
-    formConferencia = ''
+    if confe:
+        confe.anio = conferencia.anio
+        confe.duracion = conferencia.duracion
+        confe.pais = conferencia.pais
+        confe.maxArticulos = conferencia.maxArticulos
+        confe.save()
+    else:
+        existe = Conferencia.objects.all()
+        if not existe:
+            conferencia.save()   
+
+def editarDatosConferencia(request):
+
     if request.method == 'POST':
         formConferencia = ConferenciaForm(request.POST)
         if formConferencia.is_valid():
-            conferencia = Conferencia()
-            armarEntidad(conferencia)
+            armarEntidad(formConferencia)
             return HttpResponseRedirect(reverse('Conferencia:indice'))
         else:
             form = ConferenciaForm()
