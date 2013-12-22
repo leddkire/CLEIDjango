@@ -1,0 +1,11 @@
+<h1>Lista de Articulo que puede evaluar :</h1>
+
+{% if articulos %}
+	<ul>
+	{% for art in articulos %}
+		<li><a href="{% url 'Evaluacion:mostrarFormEvaluar' arbitro_id art.id%}">{{art.titulo }}	</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No hay articulos disponibles </p>
+{% endif %}
