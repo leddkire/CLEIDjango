@@ -19,11 +19,7 @@ class Nota(models.Model):
     valor=models.IntegerField(choices=NOTAS_CHOICES)
     
     def __unicode__(self):
-        for k in NOTAS_CHOICES:
-            if k[0]==self.valor:
-                string=k[1]
-                break
-        return string
+        return str(self.valor)
     
 class  Evaluacion(models.Model):
     

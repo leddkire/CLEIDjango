@@ -52,6 +52,14 @@ def mostrarFormEvaluar(request,articulo_id,arbitro_id):#,articulo_id):
     return render(request, 'Evaluacion/mostrarFormEvaluacion.html', context )
 
 def crearEvaluacion(request,arbitro,articulo):
+    def calcularPromedio(arrayNotas):
+        prom=0
+        for x in arrayNotas:
+            prom+=x.valor
+        prom=float(prom)/len(arrayNotas)
+        prom=round(prom,2)
+        return prom
+    
     def armarEntidad(evaluacion):
         #Obtenemos el objeto articulo con el nombre
         
@@ -64,7 +72,9 @@ def crearEvaluacion(request,arbitro,articulo):
         valorNota=Nota(valor=numero)
         valorNota.save()
         evaluacion.notas.add(valorNota)
-        evaluacion.promedio = 0.0
+        arrayNotas=evaluacion.notas.all()
+        prom=calcularPromedio(arrayNotas)
+        evaluacion.promedio = prom
         evaluacion.save()
     if request.method =='POST':
         form = EvaluacionForm(request.POST)
