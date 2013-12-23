@@ -18,7 +18,7 @@ class ComiteTestCase(TestCase):
         resp = self.client.get('/comite/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('comite' in resp.context)
-        self.assertEqual([comite.pk for comite in resp.context['comite']], [])
+        self.assertEqual([comite.pk for comite in resp.context['comite']], [1])
         comite_1 = resp.context['comite'][0]
         self.assertEqual(comite_1.correo, p)
         self.assertEqual(comite_1.presidente, False)

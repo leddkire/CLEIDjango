@@ -14,7 +14,7 @@ class LugarTestCase(TestCase):
         resp = self.client.get('/lugar/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('listaLugares' in resp.context)
-        self.assertEqual([lugar.pk for lugar in resp.context['listaLugares']], [1])
+        self.assertEqual(len(resp.context['listaLugares']),1)
         lugar_1 = resp.context['listaLugares'][0]
         self.assertEqual(lugar_1.nombre, "Caracas")
         self.assertEqual(lugar_1.ubicacion, "Mys 213")
