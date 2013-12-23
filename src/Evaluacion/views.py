@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext, loader
-from Evaluacion.models import Evaluacion,Arbitro,Nota
+from Evaluacion.models import Evaluacion,Nota
 from django.core.urlresolvers import reverse
 from Evaluacion.forms import EvaluacionForm
 from Articulo.models import Articulo

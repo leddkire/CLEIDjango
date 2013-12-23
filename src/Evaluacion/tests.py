@@ -1,5 +1,5 @@
 from django.test import TestCase
-from Evaluacion.models import Evaluacion, Arbitro, Nota
+from Evaluacion.models import Evaluacion, Nota
 from Articulo.models import Articulo
 from Autor.models import Autor
 from Topico.models import Topico
