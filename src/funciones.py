@@ -4,6 +4,8 @@ from Invitado.models import Invitado
 from Articulo.models import Articulo
 from Evaluacion.models import Evaluacion
 from Conferencia.models import Conferencia
+from Inscripcion.models import Inscripcion
+
 #
 # Archivo que contiene las consultas mas comunes a la base de datos, que pueden utilizar todas las
 # aplicaciones.
@@ -12,6 +14,7 @@ from Conferencia.models import Conferencia
 #
 # Funcion que devuelve una persona con corre = correoF.
 #
+
 def getPersona(correoF):
         try:
             per = Persona.objects.get(correo=correoF)
@@ -98,3 +101,11 @@ def getDatosConferencia():
     except Conferencia.DoesNotExist:
         conferencia = None
         return 0
+   
+def getInscripcion(correoF):
+    try:
+        ins = Inscripcion.objects.get(correo = correoF)
+    except Inscripcion.DoesNotExist:
+        ins = None
+    return ins
+

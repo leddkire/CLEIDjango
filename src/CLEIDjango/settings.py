@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -129,6 +130,8 @@ INSTALLED_APPS = (
     'Topico',
     'Articulo',
     'Persona',
+    'Asistente',
+    'Inscripcion',
     'Comite',
     'Evaluacion',
     'Invitado',

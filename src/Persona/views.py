@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from Persona.models import Persona
 from Persona.forms import PersonaForm
 from Persona.funciones import guardarPersona
+
 def indice(request):
     persona = Persona.objects.all()
     context = RequestContext(request, {
@@ -19,12 +20,12 @@ def mostrarFormPersona(request):
     return render(request, 'Persona/mostrarFormPersona.html', {'form':form,})
 
 def crear(request):
-
     if request.method == 'POST':
         form = PersonaForm(request.POST)
         if form.is_valid():
             persona = Persona()
             guardarPersona(persona,form)
+
             return HttpResponseRedirect(reverse('Persona:indice'))
             
     return render(request, 'Persona/mostrarFormPersona.html', 

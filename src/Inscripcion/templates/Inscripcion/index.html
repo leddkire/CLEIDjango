@@ -1,0 +1,14 @@
+<h1>Lista de Inscripciones del CLEI </h1>
+
+<a href="{% url 'Inscripcion:mostrarFormComprobar' %}"> Crear una nueva inscripci&oacute;n </a>
+
+{% if inscripcion %}
+	<h2> Inscripci&oacute;n: </h2>
+		<ul>
+	        {% for elemento in inscripcion %}
+	                <li><a href="{% url 'Inscripcion:detalle' elemento.correo %}">{{elemento.correo}}</a></li>
+	        {% endfor %}
+		</ul>
+{% else %}
+	<h2> No hay personas inscritas. </h2>
+{% endif %}

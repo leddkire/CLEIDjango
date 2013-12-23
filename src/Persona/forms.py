@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from django import forms
+
 
 from Persona.models import Persona
 
@@ -10,3 +10,4 @@ class PersonaForm(ModelForm):
         
 class CorreoForm(forms.Form):
     correo = forms.EmailField()
+

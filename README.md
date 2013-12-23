@@ -1,4 +1,4 @@
 CLEIDjango
 ==========
 
-Pryecto del CLEI en Django
+Proyecto del CLEI en Django

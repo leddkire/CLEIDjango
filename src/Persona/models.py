@@ -6,7 +6,7 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     correo = models.EmailField(primary_key=True)
-    dirpostal = models.PositiveIntegerField()
+    dirpostal = models.PositiveIntegerField('direccion postal')
     institucion = models.CharField(max_length=100)
     telefono = models.CharField(max_length=100)
     pais = models.CharField(max_length=100)
