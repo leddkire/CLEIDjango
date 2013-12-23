@@ -31,6 +31,8 @@ def indice(request):
 def conferenciaVacio():
     try:
         confe = Conferencia.objects.all()
+        if len(confe) == 0:
+            confe = None
     except Conferencia.DoesNotExist:
         confe = None
     return confe
@@ -41,7 +43,7 @@ def conferenciaVacio():
 #
 def mostrarFormConferencia(request):
     confe = conferenciaVacio()
-    if confe:
+    if confe != None:
         formConferencia = ConferenciaForm(initial={'anio': confe[0].anio, 'duracion': confe[0].duracion, 'pais':confe[0].pais, 
                                                    'maxArticulos':confe[0].maxArticulos})
     else:
@@ -60,7 +62,7 @@ def armarEntidad(formConferencia):
     except Conferencia.DoesNotExist:
         confe = None
 
-    if confe:
+    if confe != None:
         confe.anio = conferencia.anio
         confe.duracion = conferencia.duracion
         confe.pais = conferencia.pais
@@ -68,7 +70,7 @@ def armarEntidad(formConferencia):
         confe.save()
     else:
         existe = Conferencia.objects.all()
-        if not existe:
+        if existe == None or len(existe) == 0:
             conferencia.save()   
 
 def editarDatosConferencia(request):
@@ -105,14 +107,16 @@ def setArticulosAceptables():
         #Article.objects.all().annotate(arbitros_count=Count('keywords__keyword'))
         evaluacion = Evaluacion.objects.filter(promedio__gt = 2)
         #Si hubo resultados, se hace una iteracion para ver si tiene minimo dos evaluaciones.
-        if evaluacion:
+        if evaluacion != None:
             for ev in evaluacion:
                 if ev.arbitros.all().count() >= 2:
                     artAceptable = getArticuloPorId(ev.articulo.pk)
-                    if artAceptable:
+                    if artAceptable != None:
                         artAceptable.aceptable = True
                         artAceptable.save()
                         listaArticulos.append(artAceptable)
+        if len(evaluacion) == 0:
+            evaluacion = None
     except Evaluacion.DoesNotExist:
         evaluacion = None
     return listaArticulos
@@ -132,7 +136,7 @@ def get_empatados(aceptados, aceptables):
             empatados.remove(element)
         for emp in empatados:
             articulo = getArticuloPorId(emp.pk)
-            if articulo:
+            if articulo != None:
                 articulo.empatado = True
                 articulo.save()
         return empatados
@@ -145,7 +149,7 @@ def generarAceptados(aceptables):
     if maxarticulos>=len(aceptables):
         for art in aceptables:
             articulo = getArticuloPorId(art.pk)
-            if articulo:
+            if articulo != None:
                 articulo.aceptado = True
                 articulo.save()
         return aceptables
@@ -156,7 +160,7 @@ def generarAceptados(aceptables):
             while i<maxarticulos:
                 aceptados.append(aceptables[i])
                 articulo = getArticuloPorId(aceptables[i].pk)
-                if articulo:
+                if articulo != None:
                     articulo.aceptado = True
                     articulo.save()
                 i+=1
@@ -172,7 +176,7 @@ def generarAceptados(aceptables):
                 while numvecesaccept>0:
                     aceptados.remove(ultimo)
                     articulo = getArticuloPorId(ultimo.pk)
-                    if articulo:
+                    if articulo != None:
                         articulo.aceptado = False
                         articulo.save()
                     numvecesaccept-=1
@@ -188,7 +192,7 @@ def generarListas():
     return {'listaAceptables':listaAceptables, 'articulosAceptados':articulosAceptados, 'articuloEmpatado':articuloEmpatado}
     
 def aceptablesNota(request):
-    if getArticulosAceptables():
+    if getArticulosAceptados()==None:
         listas = generarListas()
         context = RequestContext(request, {
                     'articuloAceptable'    : listas['listaAceptables'],
@@ -216,9 +220,9 @@ def comprobarPresidente(request):
         if form.is_valid():
             correoForm = form.cleaned_data['correo']
             per = getPersona(correoForm)    
-            if per:
+            if per != None:
                 com = getComite(correoForm)
-                if not com:
+                if com == None:
                     form = CorreoForm()
                     return render(request, 'Conferencia/comprobarPresidente.html', 
                   {'form':form, 
@@ -228,7 +232,10 @@ def comprobarPresidente(request):
                         listaAceptados = getArticulosAceptados()
                         listaEmpatados = getArticulosEmpatados()
                         maxarticulos = getDatosConferencia()
-                        cantidad = maxarticulos - len(listaAceptados)
+                        if listaAceptados != None:
+                            cantidad = maxarticulos - len(listaAceptados)
+                        else:
+                            cantidad = maxarticulos
                         return render(request, 'Conferencia/desempatar.html', {'listaAceptados':listaAceptados, 'listaEmpatados':listaEmpatados, 'articulosRestantes':cantidad})             
                     else:
                         form = CorreoForm()
@@ -243,9 +250,12 @@ def agregarAceptado(request, articulo_id):
     listaAceptados = getArticulosAceptados()
     listaEmpatados = getArticulosEmpatados()
     maxarticulos = getDatosConferencia()
+    if listaAceptados == None:
+        listaAceptados = []
+        
     if maxarticulos > len(listaAceptados):
         articulo = getArticuloPorId(articulo_id)
-        if articulo:
+        if articulo != None:
             articulo.aceptado = True
             articulo.empatado = False
             articulo.save()
@@ -261,16 +271,16 @@ def agregarAceptado(request, articulo_id):
                    'error_message' : "Ya no se puede aceptar mas articulos."})
     
 def limpiarArticulos(listA, listE):
-    if listA:
+    if listA != None:
         for acept in listA:
             articulo = getArticuloPorId(acept.pk)
-            if articulo:
+            if articulo != None:
                 articulo.aceptado = False
                 articulo.save()
-    if listE:
+    if listE != None:
          for acept in listE:
             articulo = getArticuloPorId(acept.pk)
-            if articulo:
+            if articulo != None:
                 articulo.empatado = False
                 articulo.save()
                     

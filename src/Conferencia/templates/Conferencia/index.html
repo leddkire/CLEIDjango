@@ -14,6 +14,12 @@
 	<p>Necesita agregar datos a la conferencia: </p>
 	<br />
 {% endif %}
+<a href ="{% url 'Inscripcion:indice' %}">Inscripciones </a>
+<br />
+<a href ="{% url 'Lugar:index' %} "> Lugares</a>
+<br />
+<a href ="{% url 'Evento:indice' %}"> Eventos</a>
+<br/>
 <a href="{% url 'Conferencia:mostrarFormConferencia' %}"> Editar los datos de la conferencia </a>
 <br />
 <a href="{% url 'Comite:indice' %}"> Integrantes del comite </a>
@@ -22,7 +28,9 @@
 <br />
 <a href="{% url 'Articulo:indice' %}"> Agregar Artículo </a>
 <br />
-<a href="{% url 'Evaluacion:indice' %}"> Evualuar Artículo </a>
+<a href="{% url 'Topico:indice' %}"> Topicos </a>
+<br/>
+<a href="{% url 'Evaluacion:indice' %}"> Evaluar Artículo </a>
 <br />
 <a href="{% url 'Conferencia:mostrarTiposDeArticulos' %}"> Artículos seleccionados para CLEI</a>
 <br />

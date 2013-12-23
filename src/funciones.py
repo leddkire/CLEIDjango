@@ -46,6 +46,8 @@ def getInvitado(correoF):
 def getArticulosAceptados():
     try:
         articulo = Articulo.objects.filter(aceptado = True)
+        if len(articulo) == 0:
+            articulo = None
     except Articulo.DoesNotExist:
         articulo = None
     return articulo
@@ -56,6 +58,8 @@ def getArticulosAceptados():
 def getArticulosAceptables():
     try:
         articulo = Articulo.objects.filter(aceptable = True)
+        if len(articulo) == 0:
+            articulo = None
     except Articulo.DoesNotExist:
         articulo = None
     return articulo
@@ -66,6 +70,8 @@ def getArticulosAceptables():
 def getArticulosEmpatados():
     try:
         articulo = Articulo.objects.filter(empatado = True)
+        if len(articulo) == 0:
+            articulo = None
     except Articulo.DoesNotExist:
         articulo = None
     return articulo
