@@ -30,3 +30,7 @@
 {% else %}
 	<h2>No hay artículos empatados</h2>
 {% endif %}
+
+<a href="{% url 'Conferencia:mostrarFormComprobar' %}">Desempatar</a>
+<br />
+<a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>

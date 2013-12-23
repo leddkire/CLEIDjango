@@ -1,0 +1,25 @@
+<h1>Artículos aceptados:</h1>
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+{% if listaAceptados %}
+	<ul>
+	{% for top in listaAceptados %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos aceptados</h2>
+{% endif %}
+<hr />
+<h1>Artículos empatados:</h1>
+<p>Falta(n) {{articulosRestantes}} articulo(s) por aceptar de la lista de empatados</p>
+{% if listaEmpatados %}
+	<ul>
+	{% for top in listaEmpatados %}
+		<li><a href="{% url 'Conferencia:agregarAceptado' top.pk %}">{{top.titulo}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos empatados</h2>
+{% endif %}
+
+<a href="{% url 'Conferencia:indice' %}">Aceptar</a>

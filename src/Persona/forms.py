@@ -10,3 +10,4 @@ class PersonaForm(ModelForm):
         
 class CorreoForm(forms.Form):
     correo = forms.EmailField()
+

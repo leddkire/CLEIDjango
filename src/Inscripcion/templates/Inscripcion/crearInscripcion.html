@@ -1,0 +1,12 @@
+<h1> Crear una nueva inscripci&oacute;n:</h1>
+
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+
+<form action="{% url 'Inscripcion:crearInscripcion' %}" method="post">
+        {% csrf_token %}
+     <h2>Creación de la inscripci&oacute;n de una persona:</h2>
+     <!-- Make use of Django's automatic form templating -->
+     {{ formPersonaInscripcion.as_p }}
+
+     <p><button type="submit">Añadir inscripci&oacute;n</button></p>
+ </form>
