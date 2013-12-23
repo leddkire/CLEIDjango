@@ -9,11 +9,6 @@ NOTAS_CHOICES = (
     (4, '4'),
     (5, '5'),
     )
-class Arbitro(models.Model):
-    correo= models.CharField(max_length=50)
-    
-    def __unicode__(self):
-        return self.correo
     
 class Nota(models.Model):
     valor=models.IntegerField(choices=NOTAS_CHOICES)
