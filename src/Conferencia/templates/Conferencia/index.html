@@ -14,13 +14,16 @@
 	<p>Necesita agregar datos a la conferencia: </p>
 	<br />
 {% endif %}
+
+<a href="{% url 'Conferencia:mostrarFormConferencia' %}"> Editar los datos de la conferencia </a>
+<br/>
 <a href ="{% url 'Inscripcion:indice' %}">Inscripciones </a>
+
 <br />
 <a href ="{% url 'Lugar:index' %} "> Lugares</a>
 <br />
 <a href ="{% url 'Evento:indice' %}"> Eventos</a>
-<br/>
-<a href="{% url 'Conferencia:mostrarFormConferencia' %}"> Editar los datos de la conferencia </a>
+
 <br />
 <a href="{% url 'Comite:indice' %}"> Integrantes del comite </a>
 <br />

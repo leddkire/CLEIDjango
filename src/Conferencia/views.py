@@ -102,10 +102,10 @@ def mostrarTiposDeArticulos(request):
 #
 def setArticulosAceptables():
     listaArticulos = []
-    #Se toman todos los articulos que tienen promedio mayor a 2.00
+    #Se toman todos los articulos que tienen promedio mayor a 3.00
     try:
         #Article.objects.all().annotate(arbitros_count=Count('keywords__keyword'))
-        evaluacion = Evaluacion.objects.filter(promedio__gt = 2)
+        evaluacion = Evaluacion.objects.filter(promedio__gt = 3)
         #Si hubo resultados, se hace una iteracion para ver si tiene minimo dos evaluaciones.
         if evaluacion != None:
             for ev in evaluacion:

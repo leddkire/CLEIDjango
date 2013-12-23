@@ -9,10 +9,10 @@ class Conferencia(models.Model):
         anioOpciones.append((r,r))
          
     
-    anio = models.IntegerField(('anio'), max_length=4, choices=anioOpciones, default=datetime.datetime.now().year)
+    anio = models.PositiveIntegerField(('anio'), max_length=4, choices=anioOpciones, default=datetime.datetime.now().year)
     duracion = models.IntegerField()
     pais = models.CharField(max_length=100)
-    maxArticulos = models.IntegerField()
+    maxArticulos = models.PositiveIntegerField()
     
     def __unicode__(self):
         return str(self.anio)

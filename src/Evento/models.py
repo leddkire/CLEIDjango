@@ -4,7 +4,7 @@ from Lugar.models import Lugar
 class Evento(models.Model):
     lugar = models.ForeignKey(Lugar)
     titulo = models.CharField(max_length=100)
-    duracion = models.IntegerField()
+    duracion = models.PositiveIntegerField()
     fechaIni = models.DateField('fecha de inicio')
     horaIni = models.TimeField('hora de inicio')
     
