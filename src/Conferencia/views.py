@@ -110,11 +110,10 @@ def setArticulosAceptables():
         if evaluacion != None:
             for ev in evaluacion:
                 if ev.arbitros.all().count() >= 2:
-                    artAceptable = getArticuloPorId(ev.articulo.pk)
-                    if artAceptable != None:
-                        artAceptable.aceptable = True
-                        artAceptable.save()
-                        listaArticulos.append(artAceptable)
+                    articulo = ev.articulo
+                    articulo.aceptable = True
+                    articulo.save()
+                    listaArticulos.append(articulo)
         if len(evaluacion) == 0:
             evaluacion = None
     except Evaluacion.DoesNotExist:
@@ -159,27 +158,29 @@ def generarAceptados(aceptables):
             i=0
             while i<maxarticulos:
                 aceptados.append(aceptables[i])
-                articulo = getArticuloPorId(aceptables[i].pk)
-                if articulo != None:
-                    articulo.aceptado = True
-                    articulo.save()
+                aceptables[i].aceptado = True
+                aceptables[i].save()
                 i+=1
-            # ultimo es el promedio minimo contenido en la lista de aceptados
+            # ultimo es el articulo con promedio de menor valor en la lista de aceptados
             ultimo=aceptados[maxarticulos-1]
+            evalUltimo = ultimo.evaluacion
             # se cuenta cuantas veces aparece el promedio en la lista de aceptados
-            numvecesaccept=calcular_ocurrencia(getEvaluacionesDeArticulo(ultimo.pk).promedio, aceptados)
+            numvecesaccept=calcular_ocurrencia(evalUltimo.promedio, aceptados)
             # se cuenta cuantas veces aparece el promedio en la lista de aceptables
-            numvecesaceptables=calcular_ocurrencia(getEvaluacionesDeArticulo(ultimo.pk).promedio, aceptables)
+            numvecesaceptables=calcular_ocurrencia(evalUltimo.promedio, aceptables)
             # si el numero de veces de aceptados es distinto del numero de veces de aceptables
             # se procede a eliminar todos los valores que fueron admitidos en la lista de aceptados
+            
             if numvecesaccept!=numvecesaceptables:
-                while numvecesaccept>0:
-                    aceptados.remove(ultimo)
-                    articulo = getArticuloPorId(ultimo.pk)
-                    if articulo != None:
+                promedioEmpatado = evalUltimo.promedio
+                aceptados.remove(ultimo)
+                ultimo.aceptado = False
+                ultimo.save()
+                for articulo in aceptados:
+                    if(articulo.evaluacion.promedio == promedioEmpatado):
+                        aceptados.remove(articulo)
                         articulo.aceptado = False
                         articulo.save()
-                    numvecesaccept-=1
         else:
             return []
     return aceptados
