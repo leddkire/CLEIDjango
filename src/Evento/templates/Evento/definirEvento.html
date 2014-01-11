@@ -1,5 +1,5 @@
 <h3> Escoga el tipo de evento que quiere crear: </h3>
-
+{% if error_message %} <p style="color:red">{{error_message}}</p> {% endif %}
 <ul>
 	<li><a href="{% url 'Evento:mostrarFormEvento' 'apertura' %}">Evento de apertura.</a></li>
 	<li><a href="{% url 'Evento:mostrarFormEvento' 'clausura' %}">Evento de Clausura</a></li>

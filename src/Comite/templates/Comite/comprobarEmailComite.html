@@ -1,0 +1,9 @@
+<h1>Introduzca el email del miembro de comite que <br/>
+	que quiere agregar: </h1>
+	
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+<form action="{% url 'Comite:comprobarEmailComite'%}" method="post">
+{% csrf_token %}
+	{{form.as_p}}
+<input type = "submit" value="Comprobar"/>
+</form>

@@ -1,6 +1,9 @@
 <h1> Crear un nuevo evento: </h1>
 
-{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+{% if error_message %} <p style="color:red">{{error_message}}</p> {% endif %}
+<p><strong>Formato de fecha: aaaa-mm-dd</strong></p>
+<p><strong>Formato de hora: hh:mm:ss</strong></p>
+
 <form action="{% url 'Evento:crear' evento_tipo %}" method="post">
 {% csrf_token %}
 	{{form.as_p}}

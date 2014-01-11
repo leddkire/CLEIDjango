@@ -1,0 +1,9 @@
+<h1>Introduzca el email del invitado que <br/>
+	que quiere agregar: </h1>
+	
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+<form action="{% url 'Invitado:comprobarEmailInvitado'%}" method="post">
+{% csrf_token %}
+	{{form.as_p}}
+<input type = "submit" value="Comprobar"/>
+</form>

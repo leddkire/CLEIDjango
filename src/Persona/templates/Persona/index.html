@@ -1,0 +1,16 @@
+<h1>Lista de Personas del CLEI </h1>
+
+
+<a href="{% url 'Persona:mostrarFormPersona' %}"> Crear una nueva persona </a>
+
+{% if persona %}
+	<h2> Personas: </h2>
+		<ul>
+	        {% for elemento in persona %}
+	                <li>{{elemento.correo}}</li>
+	        {% endfor %}
+		</ul>
+{% else %}
+	<h2> No hay personas agregadas. </h2>
+{% endif %}
+

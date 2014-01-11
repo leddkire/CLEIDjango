@@ -1,0 +1,30 @@
+{% if articulosAceptados %}
+	<h2>Artículos aceptados para CLEI</h2>
+	<ul>
+	{% for top in articulosAceptados %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No se han aceptado artículos para el CLEI</h2>
+{% endif %}
+
+{% if articulosEmpatados %}
+	<h2>Artículos empatados para CLEI</h2>
+	<ul>
+	{% for top in articulosEmpatados %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if articulosAceptados %}
+	<p>Debe revertir el proceso de selección en la página principal para poder seleccionar de nuevo.</p>
+{% else %}
+	<h1>Seleccionar Artículos: </h1>
+	<h3>Escoja la forma de seleccionar artículos:</h3>
+	<ul>
+		<li><a href="{% url 'Conferencia:aceptablesNota' %}">Por puntuación</a></li>
+	</ul>
+{% endif %}
+<a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>

@@ -1,0 +1,11 @@
+<h3>Titulo del Articulo : {{titulo}} <h3/>
+
+<h3>Arbitros evaluadores: <h3/>
+{% for arb in arbitros %}
+	<li>{{arb.correo}}</li>
+		
+{% endfor %}
+
+<h3>Promedio:{{promedio}}</h3>
+
+<a href="{% url 'Evaluacion:indice' %}"> Volver </a>

@@ -1,0 +1,37 @@
+<h1> Bienvenido al sistema de CLEI: </h1>
+
+{% if conferencia %}
+	<ul>
+	{% for top in conferencia %}
+		<li><p> Anio: {{top.anio}} <br /> 
+			Duracion: {{top.duracion}} <br />
+			Pais: {{top.pais}} <br />
+			Cantidad de articulos: {{top.maxArticulos}}</p></li>
+	{% endfor %}
+	</ul>
+{% else %}
+
+	<p>Necesita agregar datos a la conferencia: </p>
+	<br />
+{% endif %}
+<a href ="{% url 'Inscripcion:indice' %}">Inscripciones </a>
+<br />
+<a href ="{% url 'Lugar:index' %} "> Lugares</a>
+<br />
+<a href ="{% url 'Evento:indice' %}"> Eventos</a>
+<br/>
+<a href="{% url 'Conferencia:mostrarFormConferencia' %}"> Editar los datos de la conferencia </a>
+<br />
+<a href="{% url 'Comite:indice' %}"> Integrantes del comite </a>
+<br />
+<a href="{% url 'Invitado:indice' %}"> Invitados </a>
+<br />
+<a href="{% url 'Articulo:indice' %}"> Agregar Artículo </a>
+<br />
+<a href="{% url 'Topico:indice' %}"> Topicos </a>
+<br/>
+<a href="{% url 'Evaluacion:indice' %}"> Evaluar Artículo </a>
+<br />
+<a href="{% url 'Conferencia:mostrarTiposDeArticulos' %}"> Artículos seleccionados para CLEI</a>
+<br />
+<a href="{% url 'Conferencia:reiniciarSeleccion' %}"> Reiniciar Proceso de Selección </a>

@@ -1,0 +1,39 @@
+<h3> Paso 3/3: Definir topicos: </h3>
+
+<SCRIPT LANGUAGE = "JavaScript">
+
+function mostrarTopico(){
+	var topicoForm = document.topico;
+	topicoForm.style.display = '';
+}
+</SCRIPT>
+
+{% if error_message %} <p style="color:red"> {{error_message}} </p> {% endif %}
+
+{%if topicos %}
+	<p>Topicos:</p>
+	<ul>
+	{% for topico in topicos %}
+		<li>
+			{{topico.nombre}} 
+		</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>El articulo no tiene topicos. Se necesita al menos un topico para registrar el articulo. </p>
+{% endif %}
+
+<button type="button" onclick = "mostrarTopico()">Agregar nuevo topico</button>
+<form name ="topico" style="display:none" action="{% url 'Articulo:crearTopico' articulo_id %}" method="post">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type = "submit" value="Asignar Topico"/>
+</form>
+
+</br>
+{% if topicos %}
+<form action="{% url 'Articulo:indice' %}" method="post"> 
+	{% csrf_token %}
+	<input type="submit" value="Crear"/>
+</form>
+{% endif %}

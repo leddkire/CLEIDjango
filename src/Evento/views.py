@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from Evento.models import Apertura,Clausura,Taller,Ponencia,CharlaInvitada, EventoSocial
 from Evento.forms import EventoForm
-from Evento.funciones import existe
+from Evento.funciones import existe, existeApertura, existeClausura
 
 def indice(request):
     apertura = Apertura.objects.all()
@@ -52,6 +52,14 @@ def definirEvento(request):
     return render(request, 'Evento/definirEvento.html', {})
 
 def mostrarFormEvento(request, evento_tipo):
+    if evento_tipo =='apertura':
+        if existeApertura():
+            error_message = 'Ya existe un evento de apertura en el CLEI'
+            return render(request, 'Evento/definirEvento.html',{'error_message':error_message})
+    if evento_tipo =='clausura':
+        if existeClausura():
+            error_message = 'Ya existe un evento de clausura en el CLEI'
+            return render(request, 'Evento/definirEvento.html',{'error_message':error_message})
     form = EventoForm()
     return render(request, 'Evento/mostrarFormEvento.html', {'form':form,'evento_tipo':evento_tipo,})
 
@@ -68,13 +76,19 @@ def crear(request, evento_tipo):
         if form.is_valid():
             if not(existe(form.cleaned_data['titulo'])):
                 if evento_tipo == 'apertura':
-                    evento = Apertura()
-                    armarEntidad(evento)
-                    return HttpResponseRedirect(reverse('Evento:indice'))
+                    if not existeApertura():
+                        evento = Apertura()
+                        armarEntidad(evento)
+                        return HttpResponseRedirect(reverse('Evento:indice'))
+                    else:
+                        err = "Ya existe un evento de apertura en el CLEI"
                 elif evento_tipo == 'clausura':
-                    evento = Clausura()
-                    armarEntidad(evento)
-                    return HttpResponseRedirect(reverse('Evento:indice'))
+                    if not existeClausura():
+                        evento = Clausura()
+                        armarEntidad(evento)
+                        return HttpResponseRedirect(reverse('Evento:indice'))
+                    else:
+                        err="Ya existe un evento de clausura en el CLEI"
                 elif evento_tipo == 'taller':
                     evento = Taller()
                     armarEntidad(evento)

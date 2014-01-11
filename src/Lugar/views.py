@@ -8,7 +8,7 @@ from Lugar.models import Lugar
 from Lugar.forms import LugarForm
 from Evento.forms import EventoFormParaLugar
 from Evento.models import Apertura, Clausura, Taller, Ponencia, CharlaInvitada, EventoSocial
-from Evento.funciones import existe
+from Evento.funciones import existe, existeApertura, existeClausura
 
 def indice(request):
     listaLugares = Lugar.objects.all()
@@ -25,6 +25,16 @@ def eventosDeLugar(request, lugar_id):
     return HttpResponse("Estas viendo los eventos asignados a este lugar: %s" %lugar_id)
 
 def mostrarFormEvento(request, lugar_id, evento_tipo):
+    if evento_tipo =='apertura':
+        if existeApertura():
+            error_message = 'Ya existe un evento de apertura en el CLEI'
+            return render(request, 'Lugar/definirEvento.html',{'lugar_id':lugar_id,
+                                                                'error_message':error_message})
+    if evento_tipo =='clausura':
+        if existeClausura():
+            error_message = 'Ya existe un evento de clausura en el CLEI'
+            return render(request, 'Lugar/definirEvento.html',{'lugar_id':lugar_id,
+                                                                'error_message':error_message})
     form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', {'form':form, 'lugar_id':lugar_id, 'evento_tipo':evento_tipo,})
 
@@ -45,13 +55,19 @@ def asignar(request, lugar_id, evento_tipo):
         if form.is_valid():
             if not(existe(form.cleaned_data['titulo'])):
                 if evento_tipo == 'apertura':
-                    evento = Apertura()
-                    armarEntidad(lugar,evento)
-                    return HttpResponseRedirect(reverse('Lugar:index'))
+                    if not existeApertura():
+                        evento = Apertura()
+                        armarEntidad(lugar,evento)
+                        return HttpResponseRedirect(reverse('Lugar:index'))
+                    else:
+                        error_message = "Ya existe un evento de apertura en el CLEI"
                 elif evento_tipo == 'clausura':
-                    evento = Clausura()
-                    armarEntidad(lugar,evento)
-                    return HttpResponseRedirect(reverse('Lugar:index'))
+                    if not existeClausura():
+                        evento = Clausura()
+                        armarEntidad(lugar,evento)
+                        return HttpResponseRedirect(reverse('Lugar:index'))
+                    else:
+                        error_message="Ya existe un evento de clausura en el CLEI"
                 elif evento_tipo == 'taller':
                     evento = Taller()
                     armarEntidad(lugar,evento)
@@ -75,6 +91,7 @@ def asignar(request, lugar_id, evento_tipo):
                 
         else:
             error_message="No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida."
+
     form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', 
                   {'form':form, 
