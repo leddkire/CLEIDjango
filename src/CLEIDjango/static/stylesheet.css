@@ -1,0 +1,76 @@
+#header {
+	position: relative;
+	border-bottom: 5px groove black;
+	text-align: center;
+	font-size: 20px;
+	font-family: Impact, sans-serif;
+	color: black;
+}
+#content {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 5%;
+	float: left;
+	border-left: 5px ridge black;
+	font-family: Tahoma, sans-serif;
+	text-align: left;
+	color: blue;
+}
+#navbar {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: red;
+	float: left;
+	width: 15%;
+	text-transform: uppercase;
+	text-align: center;
+	font-family: Tahoma, sans-serif;
+	font-size: 1.25em;
+	color: blue;
+}
+#navbar ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+#navbar ul li a {
+	text-decoration: none;
+}
+.boton:link {
+	border: 2px solid black;
+	/*border-radius: 20px;*/
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: normal;
+	}
+.boton:hover {
+	font-weight: bold;
+	}
+#footer {
+	clear: both;
+	padding: 10px;
+	border-top: 5px groove black;
+	margin-top:10px;
+	text-align: center;
+	font-family: Impact, sans-serif;
+	color: black;
+}
+#footer > p {
+	margin-bottom: -10px;
+	text-align: center
+}
+body {
+	border: 5px groove black;
+	border-radius: 20px;
+}
+.titulo {
+}
+.navbutton:link {
+	text-align: center;
+	text-decoration: none;
+	font-weight: normal;
+}
+.navbutton:hover {
+	font-weight: bold;
+}
