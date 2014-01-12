@@ -1,0 +1,129 @@
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <script type="text/javascript">
+		function mostrar() {
+			list = document.getElementById("list");
+			if (list.style.display == 'none') {
+				list.style.display = '';
+			} else {
+				list.style.display = 'none';
+			}
+		}
+		
+		function mostrarEspeciales() {
+			list = document.getElementById("listEspeciales");
+			if (list.style.display == 'none') {
+				list.style.display = '';
+			} else {
+				list.style.display = 'none';
+			}
+		}
+		
+		function mostrarRechazadosCupo() {
+			list = document.getElementById("listCupo");
+			if (list.style.display == 'none') {
+				list.style.display = '';
+			} else {
+				list.style.display = 'none';
+			}
+		}
+		
+		function mostrarRechazadosPromedio() {
+			list = document.getElementById("listPromedio");
+			if (list.style.display == 'none') {
+				list.style.display = '';
+			} else {
+				list.style.display = 'none';
+			}
+		}
+    </script>     
+</head>
+<table>
+	<tr>
+			<button type="button" onClick="mostrar()">Artículos Aceptados</button>
+			<div id = "list" style = "display : none">
+				{% if listAceptados %}
+					<ul>
+					{% for top in listAceptados %}
+						<li>{{top.titulo}}</li>
+					{% endfor %}
+					</ul>
+				{% else %}
+					<h2>No hay artículos aceptados</h2>
+				{% endif %}
+			</div>
+	</tr>
+	<br/>
+	<tr>
+			<button type="button" onClick="mostrarEspeciales()">Artículos Aceptados Especiales</button>
+			<div id ="listEspeciales" style = "display:none">
+				{% if listAceptadosEspeciales %}
+				
+				<div style=" height: 200px; border-style: groove; display: block; border-width: thin;
+																					        margin: 0;
+																					        padding: 0 5px;
+																					        position: relative;
+																					        z-index: 1;
+																					        overflow: auto;">
+					<ul>
+					{% for top in listAceptadosEspeciales %}
+						<li>{{top.titulo}}</li>
+					{% endfor %}
+					</ul>
+					</div>
+				{% else %}
+					<h2>No hay artículos aceptados Especiales</h2>
+				{% endif %}
+				
+			</div>
+	</tr>
+		<br/>
+	<tr>
+			<button type="button" onClick="mostrarRechazadosCupo()">Artículos Rechazados por Falta de Cupo</button>
+			<div id ="listCupo" style = "display:none">
+				{% if listRechazadosCupo %}
+				
+				<div style=" height: 200px; border-style: groove; display: block; border-width: thin;
+																					        margin: 0;
+																					        padding: 0 5px;
+																					        position: relative;
+																					        z-index: 1;
+																					        overflow: auto;">
+					<ul>
+					{% for top in listRechazadosCupo %}
+						<li>{{top.titulo}}</li>
+					{% endfor %}
+					</ul>
+					</div>
+				{% else %}
+					<h2>No hay artículos rechazados por falta de cupo</h2>
+				{% endif %}
+				
+			</div>
+	</tr>
+			<br/>
+	<tr>
+			<button type="button" onClick="mostrarRechazadosPromedio()">Artículos Rechazados por Promedio</button>
+			<div id ="listPromedio" style = "display:none">
+				{% if listRechazadosPromedio %}
+				
+				<div style=" height: 200px; border-style: groove; display: block; border-width: thin;
+																					        margin: 0;
+																					        padding: 0 5px;
+																					        position: relative;
+																					        z-index: 1;
+																					        overflow: auto;">
+					<ul>
+					{% for top in listRechazadosPromedio %}
+						<li>{{top.titulo}}</li>
+					{% endfor %}
+					</ul>
+					</div>
+				{% else %}
+					<h2>No hay artículos rechazados por promedio</h2>
+				{% endif %}
+				
+			</div>
+	</tr>
+</table>

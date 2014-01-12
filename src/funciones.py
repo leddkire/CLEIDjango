@@ -53,6 +53,52 @@ def getArticulosAceptados():
     return articulo
 
 #
+# Funcion que devuelve todos los articulos aceptados especiales.
+#
+def getArticulosAceptadosEspecial():
+    try:
+        articulo = Articulo.objects.filter(aceptadoEspecial = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
+# Funcion que devuelve todos los articulos rechazados por falta de cupo.
+#
+def getArticulosRechazadosCupo():
+    try:
+        articulo = Articulo.objects.filter(rechazadoFaltaCupo = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+# Funcion que devuelve todos los articulos rechazados por promedio.
+#
+def getArticulosRechazadosPorPromedio():
+    try:
+        articulo = Articulo.objects.filter(rechazadoPorPromedio = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
+# Funcion que devuelve todos los articulos aceptados especiales.
+#
+def getArticulosAceptadosEspecial():
+    try:
+        articulo = Articulo.objects.filter(aceptadoEspecial = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
 # Funcion que devuelve todos los articulos aceptables.
 #
 def getArticulosAceptables():

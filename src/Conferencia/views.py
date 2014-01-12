@@ -5,10 +5,14 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
 # Create your views here.
+from Articulo.models import Articulo
 from Conferencia.models import Conferencia
 from Conferencia.forms import ConferenciaForm
 from Comite.forms import CorreoForm
 from funciones import getArticulosAceptados
+from funciones import getArticulosAceptadosEspecial
+from funciones import getArticulosRechazadosCupo
+from funciones import getArticulosRechazadosPorPromedio
 from Evaluacion.models import Evaluacion
 from funciones import getEvaluacionesDeArticulo
 from funciones import getArticuloPorId
@@ -89,6 +93,13 @@ def editarDatosConferencia(request):
     
 def mostrarTiposDeArticulos(request):
     articulosAceptados = getArticulosAceptados()
+    articulosEspeciales = getArticulosAceptadosEspecial()
+    if articulosAceptados != None:
+        if articulosEspeciales != None:
+            articulosAceptados = articulosAceptados+articulosEspeciales
+    else:
+        articulosAceptados = articulosEspeciales
+    
     articulosEmpatados = getArticulosEmpatados()
     context = RequestContext(request, {
             'articulosAceptados'    : articulosAceptados,
@@ -106,6 +117,15 @@ def setArticulosAceptables():
     try:
         #Article.objects.all().annotate(arbitros_count=Count('keywords__keyword'))
         evaluacion = Evaluacion.objects.filter(promedio__gte = 3)
+        rechazadosPromedio = Evaluacion.objects.filter(promedio__lte = 3)
+        #Se establecen los articulos rechazados por promedio. Considerando solo los que tienen dos evaluaciones o mas.
+        
+        if rechazadosPromedio != None:
+            for re in rechazadosPromedio:
+                if re.arbitros.all().count() >= 2:
+                    articulo = re.articulo
+                    articulo.rechazadoPorPromedio = True
+                    articulo.save()
         #Si hubo resultados, se hace una iteracion para ver si tiene minimo dos evaluaciones.
         if evaluacion != None:
             for ev in evaluacion:
@@ -137,6 +157,7 @@ def get_empatados(aceptados, aceptables):
             articulo = getArticuloPorId(emp.pk)
             if articulo != None:
                 articulo.empatado = True
+                articulo.rechazadoFaltaCupo = True
                 articulo.save()
         return empatados
 
@@ -164,6 +185,14 @@ def generarAceptados(aceptables):
             # ultimo es el articulo con promedio de menor valor en la lista de aceptados
             ultimo=aceptados[maxarticulos-1]
             evalUltimo = ultimo.evaluacion
+            #Se establecen los rechazados por cupo
+            porCupo = Evaluacion.objects.filter(promedio__gte = 3, promedio__lte = evalUltimo.promedio)
+            if porCupo != None:
+                for ev in porCupo:
+                    if ev.arbitros.all().count() >= 2:
+                        articulo = ev.articulo
+                        articulo.rechazadoFaltaCupo = True
+                        articulo.save()
             # se cuenta cuantas veces aparece el promedio en la lista de aceptados
             numvecesaccept=calcular_ocurrencia(evalUltimo.promedio, aceptados)
             # se cuenta cuantas veces aparece el promedio en la lista de aceptables
@@ -203,6 +232,12 @@ def aceptablesNota(request):
         return render(request, 'Conferencia/aceptables.html', context)
     else:
         articulosAceptados = getArticulosAceptados()
+        articulosEspeciales = getArticulosAceptadosEspecial()
+        if articulosAceptados != None:
+            if articulosEspeciales != None:
+                articulosAceptados = articulosAceptados+articulosEspeciales
+        else:
+            articulosAceptados = articulosEspeciales
         articulosEmpatados = getArticulosEmpatados()
         context = RequestContext(request, {
                 'articulosAceptados'    : articulosAceptados,
@@ -231,6 +266,12 @@ def comprobarPresidente(request):
                 else:
                     if com.presidente:
                         listaAceptados = getArticulosAceptados()
+                        articulosEspeciales = getArticulosAceptadosEspecial()
+                        if listaAceptados != None:
+                            if articulosEspeciales != None:
+                                listaAceptados = listaAceptados+articulosEspeciales
+                        else:
+                            listaAceptados = articulosEspeciales
                         listaEmpatados = getArticulosEmpatados()
                         maxarticulos = getDatosConferencia()
                         if listaAceptados != None:
@@ -249,6 +290,12 @@ def comprobarPresidente(request):
 
 def agregarAceptado(request, articulo_id):
     listaAceptados = getArticulosAceptados()
+    articulosEspeciales = getArticulosAceptadosEspecial()
+    if listaAceptados != None:
+        if articulosEspeciales != None:
+            listaAceptados = listaAceptados+articulosEspeciales
+    else:
+        listaAceptados = articulosEspeciales
     listaEmpatados = getArticulosEmpatados()
     maxarticulos = getDatosConferencia()
     if listaAceptados == None:
@@ -257,10 +304,18 @@ def agregarAceptado(request, articulo_id):
     if maxarticulos > len(listaAceptados):
         articulo = getArticuloPorId(articulo_id)
         if articulo != None:
-            articulo.aceptado = True
+            #articulo.aceptado = True
             articulo.empatado = False
+            articulo.rechazadoFaltaCupo = False
+            articulo.aceptadoEspecial = True
             articulo.save()
         listaAceptados = getArticulosAceptados()
+        articulosEspeciales = getArticulosAceptadosEspecial()
+        if listaAceptados != None:
+            if articulosEspeciales != None:
+                listaAceptados = listaAceptados+articulosEspeciales
+        else:
+            listaAceptados = articulosEspeciales
         listaEmpatados = getArticulosEmpatados()
         maxarticulos = getDatosConferencia()
         cantidad = maxarticulos - len(listaAceptados)
@@ -271,7 +326,7 @@ def agregarAceptado(request, articulo_id):
                   {'listaAceptados':listaAceptados, 'listaEmpatados':listaEmpatados, 'articulosRestantes':cantidad, 
                    'error_message' : "Ya no se puede aceptar mas articulos."})
     
-def limpiarArticulos(listA, listE):
+def limpiarArticulos(listA, listE, listAE, listRC, listRP):
     if listA != None:
         for acept in listA:
             articulo = getArticuloPorId(acept.pk)
@@ -284,9 +339,26 @@ def limpiarArticulos(listA, listE):
             if articulo != None:
                 articulo.empatado = False
                 articulo.save()
-                    
+    if listAE != None:
+         for acept in listAE:
+            articulo = getArticuloPorId(acept.pk)
+            if articulo != None:
+                articulo.aceptadoEspecial = False
+                articulo.save()
+    if listRC != None:  
+         for acept in listRC:
+            articulo = getArticuloPorId(acept.pk)
+            if articulo != None:
+                articulo.rechazadoFaltaCupo = False
+                articulo.save()
+    if listRP != None:  
+         for acept in listRP:
+            articulo = getArticuloPorId(acept.pk)
+            if articulo != None:
+                articulo.rechazadoPorPromedio = False
+                articulo.save()                       
 def reiniciarSeleccion(request):
-    limpiarArticulos(getArticulosAceptados(), getArticulosEmpatados())
+    limpiarArticulos(getArticulosAceptados(), getArticulosEmpatados(), getArticulosAceptadosEspecial(), getArticulosRechazadosCupo(), getArticulosRechazadosPorPromedio())
     conferencia = Conferencia.objects.all()
     context = RequestContext(request, {
             'conferencia'    : conferencia,
@@ -295,7 +367,24 @@ def reiniciarSeleccion(request):
 
 def desempatar(request):
     listaAceptados = getArticulosAceptados()
+    articulosEspeciales = getArticulosAceptadosEspecial()
+    if listaAceptados != None:
+        if articulosEspeciales != None:
+            listaAceptados = listaAceptados+articulosEspeciales
+    else:
+        listaAceptados = articulosEspeciales
     listaEmpatados = getArticulosEmpatados()
     maxarticulos = getDatosConferencia()
     cantidad = maxarticulos - len(listaAceptados)
     return render(request, 'Conferencia/desempatar.html', {'listaAceptados': listaAceptados, 'listaEmpatados':listaEmpatados, 'articulosRestantes':cantidad})
+
+def mostrarEstadoArticulos(request):
+    listAceptados = getArticulosAceptados()
+    listAceptadosEspeciales = getArticulosAceptadosEspecial()
+    listRechazadoCupo = getArticulosRechazadosCupo()
+    return render(request, 'Conferencia/estadoArticulos.html', {'listAceptados': listAceptados, 'listAceptadosEspeciales': listAceptadosEspeciales, 
+                                                                'listRechazadosCupo': listRechazadoCupo, 'listRechazadosPromedio':getArticulosRechazadosPorPromedio()})
+#{%extends "base.html"%}
+#{%block content%}
+#{%endblock%}
+#
