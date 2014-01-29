@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Crear un nuevo evento: </h1>
 
 {% if error_message %} <p style="color:red">{{error_message}}</p> {% endif %}
@@ -9,3 +11,4 @@
 	{{form.as_p}}
 	<input type = "submit" value="Crear"/>
 </form>
+{% endblock %}

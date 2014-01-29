@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Crear un lugar:</h1>
 
 {% if  error_message %} {{error_message}} {% endif %}
@@ -7,3 +9,4 @@
 	{{form.as_p}}
 	<input type="submit" value="Crear Lugar"/>
 </form>
+{% endblock %}

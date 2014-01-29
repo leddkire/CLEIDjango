@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Informacion acerca del miembro del comite:</h1>
 
 <p><strong>Nombre: </strong>{{ persona.nombre }}</p>
@@ -22,3 +24,4 @@
 {% endif %}
 
 <a href="{% url 'Comite:indice' %}"> Regresar al indice</a>
+{% endblock %}

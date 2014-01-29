@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Lista de Arbitros :</h1>
 
 {% if arbitros %}
@@ -12,3 +14,4 @@
 
 
 <a href="{% url 'Evaluacion:indice' %}"> Volver </a>
+{% endblock %}

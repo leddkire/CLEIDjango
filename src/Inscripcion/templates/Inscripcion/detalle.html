@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Informaci&oacute;n de la inscripci&oacute;n de una persona: </h1>
 
 
@@ -7,3 +9,4 @@
 <p><strong>Fecha tope:</strong> {{inscripcion.fechatope}}</p>
 
 <a href="{% url 'Inscripcion:indice' %}"> Volver a la lista de inscripciones</a>
+{% endblock %}

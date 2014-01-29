@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Lista de articulos evaluados: </h1>
 
 
@@ -15,3 +17,4 @@
 <a href="{% url 'Evaluacion:mostrarArbitro' %}"> Realizar una evaluacion </a>
 </br>
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
+{% endblock %}

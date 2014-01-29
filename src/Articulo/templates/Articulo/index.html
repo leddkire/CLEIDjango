@@ -1,6 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Lista de Articulos:</h1>
 
-<a href = "{% url 'Articulo:crearArticuloPasoDG' %}"> Crear un nuevo articulo </a>
+<a class="button" href = "{% url 'Articulo:crearArticuloPasoDG' %}"> Crear un nuevo articulo </a>
 
 {% if articulos %}
 	<ul>
@@ -13,4 +15,5 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
+{% endblock %}
 

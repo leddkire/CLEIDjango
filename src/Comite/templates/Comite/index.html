@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Lista de personas en el comite : </h1>
 
 <a href="{% url 'Comite:mostrarFormComprobar' %}"> Crear una nueva persona miembro del comite </a>
@@ -13,3 +15,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}"> Volver a la página principal</a>
+{% endblock %}

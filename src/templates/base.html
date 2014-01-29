@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}CSS/stylesheet.css"/>
+	</head>
+	<body>
+		<div id="header">
+			<img src="{{ STATIC_URL }}Img/CLEI 2014.jpg" width="150" height="150"/>
+			<h1>CLEI 2014</h1>
+			<p>Conferencia Latinoamericana en Informatica</p>
+			
+		</div>
+		<div id="navbar">
+			<ul>
+				<li><a href="{% url 'Conferencia:indice'%}">Home</a></li>
+				<li><a href="{% url 'Articulo:indice' %}">Articulos</a></li>
+				<li><a href="{% url 'Comite:indice' %}">Comites</a></li>
+				<li><a href="{% url 'Evaluacion:indice' %}">Evaluacion</a></li>
+				<li><a href="{% url 'Evento:indice' %}">Eventos</a></li>
+				<li><a href="{% url 'Inscripcion:indice' %}">Inscripcion</a></li>
+				<li><a href="{% url 'Persona:indice' %}">Personas</a></li>
+				<li><a href="{% url 'Invitado:indice' %}">Invitados</a></li>
+				<li><a href="{% url 'Lugar:index' %}">Lugares</a></li>
+				<li><a href="{% url 'Topico:indice' %}">Topicos</a></li>
+			</ul>
+		</div>
+		<div class="content">
+		{% block content %}{% endblock %}
+		</div>
+		<div id="footer">
+			<p>Creado por Trucutu.inc</p>
+		</div>
+	<body>
+</html>

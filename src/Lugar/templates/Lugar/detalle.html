@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> {{lugar.nombre}} </h1>
 <a href = "{% url 'Lugar:definirEvento' lugar.id %}"> Asignar un nuevo evento a este lugar </a>
 <h3> Eventos asignados a este lugar: </h3>
@@ -30,3 +32,4 @@
 </ul>
 
 <a href="{% url 'Lugar:index' %}"> Regresar al indice</a>
+{% endblock %}

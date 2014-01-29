@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Informacion acerca del articulo:</h1>
 
 <p><strong>Titulo: </strong>{{ articulo.titulo }}</p>
@@ -25,3 +27,4 @@
 </ul>
 
 <a href="{% url 'Articulo:indice' %}"> Regresar al indice</a>
+{% endblock %}

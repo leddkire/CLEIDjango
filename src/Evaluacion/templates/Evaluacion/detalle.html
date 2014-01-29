@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h3>Titulo del Articulo : {{titulo}} <h3/>
 
 <h3>Arbitros evaluadores: <h3/>
@@ -9,3 +11,4 @@
 <h3>Promedio:{{promedio}}</h3>
 
 <a href="{% url 'Evaluacion:indice' %}"> Volver </a>
+{% endblock %}

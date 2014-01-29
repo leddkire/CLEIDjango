@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Lista de Inscripciones del CLEI </h1>
 
 <a href="{% url 'Inscripcion:mostrarFormComprobar' %}"> Crear una nueva inscripci&oacute;n </a>
@@ -14,3 +16,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Lista de Articulo que puede evaluar :</h1>
 
 {% if articulos %}
@@ -12,3 +14,4 @@
 
 
 <a href="{% url 'Evaluacion:indice' %}"> Volver </a>
+{% endblock %}

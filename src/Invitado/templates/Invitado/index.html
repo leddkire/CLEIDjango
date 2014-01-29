@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Lista de personas invitadas : </h1>
 
 <a href="{% url 'Invitado:mostrarFormComprobar' %}"> Agregar un nuevo invitado </a>
@@ -13,3 +15,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}"> Volver a la página principal</a>
+{% endblock %}

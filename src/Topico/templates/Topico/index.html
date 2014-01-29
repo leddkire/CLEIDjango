@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Lista de topicos : </h1>
 
 <a href="{% url 'Topico:mostrarFormTopico' %}"> Crear un nuevo topico </a>
@@ -13,4 +15,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
-
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h3> Paso 1/3: Datos generales del articulo:</h3>
 
 {% if error_message %} <p style="color:red"> {{error_message}} </p> {% endif %}
@@ -10,3 +12,4 @@
 
 	<input type="submit" value="Siguiente"/>
 </form>
+{% endblock %}

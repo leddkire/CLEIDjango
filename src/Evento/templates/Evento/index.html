@@ -1,6 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Lista de Eventos del CLEI </h1>
 
-<a href="{% url 'Evento:definirEvento' %}"> Crear un nuevo evento </a>
+<a class="button" href="{% url 'Evento:definirEvento' %}"> Crear un nuevo evento </a>
 
 {% if apertura %}
 <h2> Evento de apertura: </h2>
@@ -70,5 +72,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
-
-
+{% endblock %}

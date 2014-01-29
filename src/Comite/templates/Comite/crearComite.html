@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Crear un nuevo comite: </h1>
 
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
@@ -10,3 +12,4 @@
 
      <p><button type="submit">Añadir miembro del comite</button></p>
  </form>
+ {% endblock %}

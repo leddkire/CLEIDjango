@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Informacion del evento: </h1>
 
 
@@ -8,3 +10,4 @@
 <p><strong>Hora de Inicio:</strong> {{evento.horaIni}}</p>
 
 <a href="{% url 'Evento:indice' %}"> Regresar al indice</a>
+{% endblock %}

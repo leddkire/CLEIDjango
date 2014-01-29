@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Introduzca la nota de la evaluacion: </h1>
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
 
@@ -10,3 +12,4 @@
 </form>
 
 <a href="{% url 'Evaluacion:indice' %}"> Volver </a>
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1> Lista de lugares en la conferencia: </h1>
 
 <a href= "{% url 'Lugar:crear' %}"> Crear un lugar </a>
@@ -13,3 +15,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
+{% endblock %}

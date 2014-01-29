@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Artículos aceptables:</h1>
 {% if articuloAceptable %}
 	<ul>
@@ -34,3 +36,4 @@
 <a href="{% url 'Conferencia:mostrarFormComprobar' %}">Desempatar</a>
 <br />
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
+{% endblock %}

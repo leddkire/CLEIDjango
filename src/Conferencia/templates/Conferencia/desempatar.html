@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Artículos aceptados:</h1>
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
 {% if listaAceptados %}
@@ -23,3 +25,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:indice' %}">Aceptar</a>
+{% endblock %}
