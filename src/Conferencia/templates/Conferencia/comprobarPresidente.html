@@ -2,7 +2,11 @@
 	que quiere desempatar: </h1>
 	
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
-<form action="{% url 'Conferencia:comprobarPresidente'%}" method="post">
+{%if vistaSiguiente == 'desempatar'%}
+<form action="{% url 'Conferencia:comprobarPresidente' 'desempatar' %}" method="post">
+{%else%}
+<form action="{% url 'Conferencia:comprobarPresidente' 'especiales' %}" method="post">
+{%endif%}
 {% csrf_token %}
 	{{form.as_p}}
 <input type = "submit" value="Comprobar"/>

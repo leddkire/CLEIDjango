@@ -1,0 +1,8 @@
+{% if listaAceptados %}
+	<h2>Artículos aceptados para CLEI</h2>
+	<ul>
+	{% for top in listaAceptados %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% endif %}
