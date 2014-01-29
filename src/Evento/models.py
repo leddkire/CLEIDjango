@@ -8,7 +8,7 @@ from Topico.models import Topico
 class Evento(models.Model):
     lugar = models.ForeignKey(Lugar)
     titulo = models.CharField(max_length=100)
-    duracion = models.PositiveIntegerField()
+    duracion = models.PositiveIntegerField("duracion (horas)")
     fechaIni = models.DateField('fecha de inicio')
     horaIni = models.TimeField('hora de inicio')
     
@@ -35,20 +35,20 @@ class EventoSocial(Evento):
     
 class Taller(Evento):
     articulo = models.OneToOneField(Articulo, null = True)
-    topicos = models.ManyToManyField(Topico, null = True)
+    topico = models.ForeignKey(Topico,verbose_name = 'Topico principal')
     def __unicode__(self):
         return self.titulo
     
 class Ponencia(Evento):
-    articulo = models.ForeignKey(Articulo, null = True)
-    moderadores = models.ForeignKey(Moderador, null = True)
-    topicos = models.ManyToManyField(Topico, null = True)
+    articulos = models.ForeignKey(Articulo, null = True)
+    moderadores = models.ManyToManyField(Moderador, null = True)
+    topico = models.ForeignKey(Topico,verbose_name = 'Topico principal')
     def __unicode__(self):
         return self.titulo
     
 class CharlaInvitada(Evento):
-    articulos = models.OneToOneField(Articulo, null = True)
-    moderadores = models.ForeignKey(Moderador, null = True)
-    topicos = models.ManyToManyField(Topico, null = True)
+    articulo = models.OneToOneField(Articulo, null = True)
+    moderadores = models.ManyToManyField(Moderador, null = True)
+    topico = models.ForeignKey(Topico, verbose_name = 'Topico principal')
     def __unicode__(self):
         return self.titulo

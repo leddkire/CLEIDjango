@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'Invitado',
     'Autor',
     'Conferencia',
+    'asignarModerador',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

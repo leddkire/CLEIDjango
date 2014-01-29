@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 
 from Evento.models import Apertura,Clausura,Taller,Ponencia,CharlaInvitada, EventoSocial
-from Evento.forms import EventoForm
+from Evento.forms import EventoForm, TallerCharlaPonenciaForm
 from Evento.funciones import existe, existeApertura, existeClausura, intersectaFecha
 
 def indice(request):
@@ -60,7 +60,12 @@ def mostrarFormEvento(request, evento_tipo):
         if existeClausura():
             error_message = 'Ya existe un evento de clausura en el CLEI'
             return render(request, 'Evento/definirEvento.html',{'error_message':error_message})
-    form = EventoForm()
+    #Revisar cual tipo de evento es para crear el formulario apropiado
+    if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+        form = TallerCharlaPonenciaForm
+    else:
+        form = EventoForm()
     return render(request, 'Evento/mostrarFormEvento.html', {'form':form,'evento_tipo':evento_tipo,})
 
 def crear(request, evento_tipo):
@@ -70,9 +75,16 @@ def crear(request, evento_tipo):
         evento.duracion = form.cleaned_data['duracion']
         evento.fechaIni = form.cleaned_data['fechaIni']
         evento.horaIni = form.cleaned_data['horaIni']
+        if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+            evento.topico = form.cleaned_data['topico']
         evento.save()  
     if request.method == 'POST':
-        form = EventoForm(request.POST)
+        if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+            form = TallerCharlaPonenciaForm(request.POST)
+        else:
+            form = EventoForm(request.POST)
         if form.is_valid():
             if not(existe(form.cleaned_data['titulo'])):
                 if not(intersectaFecha(form.cleaned_data['fechaIni'],form.cleaned_data['horaIni'],form.cleaned_data['lugar'], form.cleaned_data['duracion'])):
@@ -112,7 +124,7 @@ def crear(request, evento_tipo):
                 err ="Un evento con este titulo ya existe."
                 
         else:
-            err = "No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida (aaaa/mm/dd), y la hora de inicio una hora valida (HH:MM:SS)." 
+            err = "No se lleno el formulario correctamente." 
     error_message = err       
     return render(request, 'Evento/mostrarFormEvento.html', 
                   {'form':form, 

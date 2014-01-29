@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^evaluacion/', include('Evaluacion.urls', namespace="Evaluacion")),
     url(r'^inscripcion/', include('Inscripcion.urls', namespace = "Inscripcion")),
     url(r'^asistente/', include('Asistente.urls', namespace = "Asistente")),
+    url(r'^asignarModerador/', include('asignarModerador.urls', namespace = "asignarModerador")),
 	url(r'^admin/', include(admin.site.urls)),
 )
 

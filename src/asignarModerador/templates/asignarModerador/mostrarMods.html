@@ -1,0 +1,43 @@
+{% comment %}
+{% extends "base.html" %}
+{% block content %}
+{% endcomment %}
+
+<h1> Seleccion de moderadores </h1>
+
+{{ error_message}}
+{% if modsEvento %}
+<h3> Moderadores actualmente asignados a este evento: </h3>
+<ul>
+	{% for moderador in modsEvento %}
+		<li> {{moderador.comite.correo.nombre}} {{moderador.comite.correo.apellido}} - {{moderador.comite.correo.correo}} </li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+<h3> Escriba el correo del moderador que desea asignar a este evento: </h3>
+
+{% if moderadores %}
+<ul>
+	{% for moderador in moderadores %}
+		<li>{{moderador.comite.correo.nombre}} {{moderador.comite.correo.apellido}} - {{moderador.comite.correo.correo}} </li>
+	{% endfor %}
+</ul>
+{% else %}
+No hay moderadores disponibles.
+
+{% endif %}
+
+<form action="{% url 'asignarModerador:asignarMod' evento_tipo evento_id %}" method="post">
+{% csrf_token %}
+	{{form.as_p}}
+	<input type = "submit" value = "Asignar Moderador">
+</form>
+
+
+
+<a href = "{% url 'asignarModerador:indice' %}">Regresar </a>
+
+{% comment %}
+{% endblock %}
+{% endcomment %}
