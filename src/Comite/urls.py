@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^mostrarFormComprobar/$',views.mostrarFormComprobar, name='mostrarFormComprobar'),
     url(r'^comprobarEmailComite/$',views.comprobarEmailComite, name='comprobarEmailComite'),
     url(r'^crearComite/$', views.crearComite, name='crearComite'),
+    url(r'^agregarMod/$',views.agregarMod, name = 'agregarMod'),
     
 )

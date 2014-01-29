@@ -1,0 +1,19 @@
+{% comment %}
+{% extends "base.html" %}
+{% block content %}
+{% endcomment %}
+
+<h3> Seleccione el miembro de comite que sera moderador </h3>
+<form action = "{%url 'Comite:agregarMod' %}" method="post">
+{% csrf_token %}	
+	{{form.as_p}}
+	<input type = "submit" value="Agregar"/>
+</form>
+
+<a href = {% url 'Comite:indice' %}> Regresar al indice </a>
+
+
+
+{% comment %}
+{% endblock %}
+{% endcomment %}

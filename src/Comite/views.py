@@ -5,19 +5,18 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
 # Create your views here.
-from Comite.models import Comite
-from Comite.forms import ComiteForm
-from Comite.forms import CorreoForm
-from Comite.forms import PersonaComiteForm
+from Comite.models import Comite, Moderador
+from Comite.forms import ComiteForm, CorreoForm, PersonaComiteForm, ModeradorForm
 from Persona.models import Persona
 from Persona.forms import PersonaForm
-from funciones import getPersona
-from funciones import getComite
+from funciones import getPersona, getComite
 
 def indice(request):
     comite = Comite.objects.all()
+    moderadores = Moderador.objects.all()
     context = RequestContext(request, {
             'comite'    : comite,
+            'moderadores':moderadores,
     })
     return render(request, 'Comite/index.html', context)
 #
@@ -138,4 +137,18 @@ def crearComite(request):
             
     return render(request, 'Comite/crearComite.html', 
                   {'formPersonaComite':form, 
-                   'error_message' : "No se lleno el formulario correctamente. La direccion postal tiene que ser un enterooooo."})
+                   'error_message' : "No se lleno el formulario correctamente."})
+
+def agregarMod(request):
+    if request.method == 'POST':
+        form = ModeradorForm(request.POST)
+        if form.is_valid():
+            mod = Moderador(comite = form.cleaned_data['comite'])
+            mod.save()
+            return HttpResponseRedirect(reverse('Comite:indice'))
+        else:
+            return render(request, 'Comite/agregarMod.html', {'form':form,})
+    else:
+        form = ModeradorForm()
+        return render(request, 'Comite/agregarMod.html', {'form':form})
+        
