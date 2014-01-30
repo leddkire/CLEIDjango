@@ -154,6 +154,8 @@ def asignarMod(request, evento_id, evento_tipo):
             evento.save()
             return HttpResponseRedirect(reverse('Evento:detalle',args=[evento_id,evento_tipo]))
             
-            
-        
+#Asignacion de articulos a los eventos
+def mostrarArticulos(request,evento_tipo,evento_id):
+    
+def asignarArticulo(request, evento_tipo, evento_id, articulo_id):       
     

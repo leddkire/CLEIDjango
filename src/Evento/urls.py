@@ -13,7 +13,10 @@ urlpatterns = patterns('',
     url(r'^mostrarForm(?P<evento_tipo>\w+)/$', views.mostrarFormEvento, name='mostrarFormEvento'),
     # /evento/crear<evento_tipo>/
     url (r'^crear(?P<evento_tipo>\w+)/$', views.crear, name = 'crear'),
-    # /evento/<evento_id>/<evento_tipo>/asignarModerador/
-#    url (r'^(?P<evento_id>\d+)/(?P<evento_tipo>\w+)/asignarModerador/$', views.asignarModIndex, name = 'asignarModIndex'),
+    # /evento/mostrarArticulo/<evento_tipo>/<evento_id>
+    url(r'^mostrarArticulos/(?P<evento_tipo>\w+)/(?P<evento_id>\d+)/$', views.mostrarArticulos, name='mostrarArticulos'),
+    # /evento/asignarArticulo/<evento_tipo>/<evento_id>
+    url(r'^asignarArticulos/(?P<evento_tipo>\w+)/(?P<evento_id>\d+)/(?P<articulo_id>\d+)/$', views.asignarArticulos, name='asignarArticulos'),
+    
 )
 
