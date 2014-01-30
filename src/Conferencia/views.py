@@ -17,6 +17,7 @@ from funciones import getDatosConferencia
 from funciones import getArticulosEmpatados
 from funciones import getPersona
 from funciones import getComite
+from funciones import getAutor
 
 def indice(request):
     conferencia = Conferencia.objects.all()
@@ -293,6 +294,9 @@ def reiniciarSeleccion(request):
     })
     return render(request, 'Conferencia/index.html', context)
 
+def generarListaArticulos(request):
+    return True
+    
 def desempatar(request):
     listaAceptados = getArticulosAceptados()
     listaEmpatados = getArticulosEmpatados()

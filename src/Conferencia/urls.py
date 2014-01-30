@@ -15,5 +15,7 @@ urlpatterns = patterns('',
     url(r'^reiniciarSeleccion/$', views.reiniciarSeleccion, name='reiniciarSeleccion'),
     url(r'^mostrarFormComprobar/$', views.mostrarFormComprobar, name='mostrarFormComprobar'),
     url(r'^(?P<articulo_id>\d+)/$', views.agregarAceptado, name='agregarAceptado'),
+    # url para generar la lista de articulos por sesion
+#    url(r'^generarListaArticulos/$', views.generarListaArticulos, name='generarListaArticulos'),
     #url(r'^comprobarEmailComite/$',views.comprobarEmailComite, name='comprobarEmailComite'), 
 )

@@ -5,6 +5,7 @@ from Articulo.models import Articulo
 from Evaluacion.models import Evaluacion
 from Conferencia.models import Conferencia
 from Inscripcion.models import Inscripcion
+from Autor.models import Autor
 
 #
 # Archivo que contiene las consultas mas comunes a la base de datos, que pueden utilizar todas las
@@ -21,6 +22,16 @@ def getPersona(correoF):
         except Persona.DoesNotExist:
             per = None 
         return per
+#
+# Funcion que devuelve el autor con correo = correoF.
+#    
+def getAutor(correoF):
+    try:
+        autor = Autor.objects.get(correo = correoF)
+    except Autor.DoesNotExist:
+        autor = None
+    return autor
+
 #
 # Funcion que devuelve el miembro del comite con correo = correoF.
 #    
@@ -40,6 +51,17 @@ def getInvitado(correoF):
         inv = None
     return inv
 
+#
+# Funcion que devuelve todos los articulos aceptados.
+#
+
+def getEventos():
+    try:
+        evento = Evento.objects.get(titulo = titulo)
+    except Evento.DoesNotExist:
+        evento = None
+    return evento
+            
 #
 # Funcion que devuelve todos los articulos aceptados.
 #
