@@ -4,7 +4,11 @@
 
 function mostrarAutor (){
 	var email = document.email;
-	email.style.display = '';
+	if (email.style.display == 'none'){
+		email.style.display = '';
+	}else{
+		email.style.display = 'none';
+	}
 }
 </SCRIPT>
 <h3> Paso 2/3: Nombrar autores: </h3>

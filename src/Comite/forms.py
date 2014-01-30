@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from Comite.models import Comite
+from Comite.models import Comite, Moderador
 from django import forms
 
 from Persona.forms import PersonaForm 
@@ -24,3 +24,8 @@ class PersonaComiteForm(forms.Form):
     pagina = forms.CharField(max_length=100)
     presidente = forms.BooleanField(initial=False, required = False)
     arbitro = forms.BooleanField(initial=False, required = False)
+
+class ModeradorForm(forms.ModelForm):
+    class Meta:
+        model = Moderador
+        fields = ['comite']

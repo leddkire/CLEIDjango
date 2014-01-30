@@ -2,17 +2,30 @@
 {% block content %}
 <h1> Lista de personas en el comite : </h1>
 
-<a href="{% url 'Comite:mostrarFormComprobar' %}"> Crear una nueva persona miembro del comite </a>
+<a href="{% url 'Comite:mostrarFormComprobar' %}"> Agregar una nueva persona al comite </a>
 
 {% if comite %}
 	<ul>
 	{% for top in comite %}
-		<li><a href="{% url 'Comite:detalle' top.correo %}">{{top.correo}} - {{top.nombre}} {{top.apellido}}</a></li>
+		<li><a href="{% url 'Comite:detalle' top.correo %}">{{top.correo}} </a> - {{top.correo.nombre}} {{top.correo.apellido}}</li>
 	{% endfor %}
 	</ul>
 {% else %}
 	<p>No hay personas del comite agregadas </p>
 {% endif %}
 
+<h3> Moderadores: </h3>
+<a href = "{%url 'Comite:agregarMod' %}"> Asignar un miembro del comite el rol de moderador </a>
+{% if moderadores %}
+<ul>
+	{%for moderador in moderadores %}
+		<li>{{moderador.comite.correo.correo}} - {{moderador.comite.correo.nombre}} {{moderador.comite.correo.apellido}} </li>
+	{% endfor %}
+</ul>
+{% else %}
+<p>No hay moderadores actualmente</p>
+{%endif%}
+
 <a href="{% url 'Conferencia:indice' %}"> Volver a la página principal</a>
 {% endblock %}
+>>>>>>> asignarModeradores

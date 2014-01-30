@@ -1,6 +1,5 @@
 /__init__.pyc
-/admin.pyc
-/urls.pyc
 /models.pyc
-/views.pyc
 /tests.pyc
+/urls.pyc
+/views.pyc

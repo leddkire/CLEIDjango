@@ -6,7 +6,7 @@ from django.db import IntegrityError
 
 from Lugar.models import Lugar
 from Lugar.forms import LugarForm
-from Evento.forms import EventoFormParaLugar
+from Evento.forms import EventoFormParaLugar, TallerCharlaPonenciaFormParaLugar
 from Evento.models import Apertura, Clausura, Taller, Ponencia, CharlaInvitada, EventoSocial
 from Evento.funciones import existe, existeApertura, existeClausura
 
@@ -35,7 +35,12 @@ def mostrarFormEvento(request, lugar_id, evento_tipo):
             error_message = 'Ya existe un evento de clausura en el CLEI'
             return render(request, 'Lugar/definirEvento.html',{'lugar_id':lugar_id,
                                                                 'error_message':error_message})
-    form = EventoFormParaLugar()
+    #Revisar cual tipo de evento es para crear el formulario apropiado
+    if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+        form = TallerCharlaPonenciaFormParaLugar()
+    else:
+        form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', {'form':form, 'lugar_id':lugar_id, 'evento_tipo':evento_tipo,})
 
 def definirEvento(request, lugar_id):
@@ -48,10 +53,17 @@ def asignar(request, lugar_id, evento_tipo):
         evento.duracion = form.cleaned_data['duracion']
         evento.fechaIni = form.cleaned_data['fechaIni']
         evento.horaIni = form.cleaned_data['horaIni']
+        if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+            evento.topico = form.cleaned_data['topico']
         evento.save()
     lugar = get_object_or_404(Lugar, pk=lugar_id)
     if request.method == 'POST':
-        form = EventoFormParaLugar(request.POST)
+        if (evento_tipo == 'charlaInvitada' or 
+        evento_tipo == 'taller' or evento_tipo == 'ponencia'):
+            form = TallerCharlaPonenciaFormParaLugar(request.POST)
+        else:
+            form = EventoFormParaLugar(request.POST)
         if form.is_valid():
             if not(existe(form.cleaned_data['titulo'])):
                 if evento_tipo == 'apertura':
@@ -90,9 +102,8 @@ def asignar(request, lugar_id, evento_tipo):
                 error_message="Un evento con ese titulo ya existe."
                 
         else:
-            error_message="No se lleno el formulario correctamente. La duracion tiene que ser un entero, la fecha de inicio una fecha valida, y la hora de inicio una hora valida."
+            error_message="No se lleno el formulario correctamente."
 
-    form = EventoFormParaLugar()
     return render(request, 'Lugar/mostrarFormEvento.html', 
                   {'form':form, 
                    'error_message' : error_message,

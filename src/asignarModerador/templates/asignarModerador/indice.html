@@ -1,0 +1,29 @@
+{% comment %}
+{% extends "base.html" %}
+{% block content %}
+{% endcomment %}
+<h1> Lista de eventos a los que se pueden asignar moderadores: </h1>
+<h3> Seleccione un evento para asignarle moderadores </h3>
+
+{% if ponencias %}
+<h4> Ponencias: </h4>
+<ul>
+	{% for ponencia in ponencias %}
+		<li><a href = "{% url 'asignarModerador:mostrarMods' 'ponencia' ponencia.id  %}" > {{ponencia.titulo}} </a> </li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+{% if charlas %}
+<h4> Charlas Invitadas: </h4>
+<ul>
+
+	{% for charla in charlas %}
+		<li><a href = "{% url 'asignarModerador:mostrarMods' 'charlaInvitada' charla.id %}" >  {{charla.titulo}}</a></li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+{% comment %}
+{% endblock %}
+{% endcomment %}
