@@ -13,6 +13,9 @@ class Articulo(models.Model):
     aceptado = models.BooleanField(default = False)
     aceptable = models.BooleanField(default = False)
     empatado = models.BooleanField(default = False)
+    aceptadoEspecial = models.BooleanField(default = False)
+    rechazadoFaltaCupo = models.BooleanField(default = False)
+    rechazadoPorPromedio = models.BooleanField(default = False)
     
     def __unicode__(self):
         return self.titulo

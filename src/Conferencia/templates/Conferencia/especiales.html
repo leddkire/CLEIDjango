@@ -1,0 +1,25 @@
+<h1>Artículos Aceptados Especiales:</h1>
+{% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
+{% if listaEspeciales %}
+	<ul>
+	{% for top in listaEspeciales %}
+		<li>{{top.titulo}}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos aceptados especiales seleccionados</h2>
+{% endif %}
+<hr />
+<h1>Artículos:</h1>
+<p>Falta(n) {{cantidad}} artículo(s) por aceptar, elíjalos o continúe con el proceso<br/> de selección.</p>
+{% if listaArticulos %}
+	<ul>
+	{% for top in listaArticulos %}
+		<li><a href="{% url 'Conferencia:agregarEspecial' top.pk %}">{{top.titulo}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<h2>No hay artículos para elegir</h2>
+{% endif %}
+
+<a href="{% url 'Conferencia:mostrarTiposDeArticulos' %}">Volver</a>

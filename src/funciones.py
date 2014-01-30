@@ -1,10 +1,12 @@
 from Persona.models import Persona
 from Comite.models import Comite
+from Topico.models import Topico
 from Invitado.models import Invitado
 from Articulo.models import Articulo
 from Evaluacion.models import Evaluacion
 from Conferencia.models import Conferencia
 from Inscripcion.models import Inscripcion
+from django.db.models import Q
 
 #
 # Archivo que contiene las consultas mas comunes a la base de datos, que pueden utilizar todas las
@@ -41,11 +43,105 @@ def getInvitado(correoF):
     return inv
 
 #
+# Funcion que devuelve la cantidad de articulos para determinado topico
+#
+def getNumArticulosDeTopico(topico):
+    count = 0
+    aceptados = getArticulosAceptadosYEspeciales()
+    if aceptados != None:
+        for articulo in aceptados:
+            try:
+                articulo.topicos.get(nombre = topico)
+                count += 1
+            except Topico.DoesNotExist:
+                pass
+    return count            
+
+#
+# Funcion que devuelve todos los topicos
+#
+def getTopicos():
+    try:
+        topicos = Topico.objects.all()
+        if len(topicos) == 0:
+            topicos = None
+    except Topico.DoesNotExist:
+        topicos = none
+    return topicos
+
+#
+# Funcion que devuelve todos articulos
+#
+def getArticulosNoEspeciales():
+    try:
+        articulo = Articulo.objects.filter(aceptadoEspecial = False, aceptado = False)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
 # Funcion que devuelve todos los articulos aceptados.
 #
 def getArticulosAceptados():
     try:
         articulo = Articulo.objects.filter(aceptado = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+def getArticulosAceptadosYEspeciales():
+    try:
+        articulo = Articulo.objects.filter(Q(aceptado = True) | Q(aceptadoEspecial = True))
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
+# Funcion que devuelve todos los articulos aceptados especiales.
+#
+def getArticulosAceptadosEspecial():
+    try:
+        articulo = Articulo.objects.filter(aceptadoEspecial = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
+# Funcion que devuelve todos los articulos rechazados por falta de cupo.
+#
+def getArticulosRechazadosCupo():
+    try:
+        articulo = Articulo.objects.filter(rechazadoFaltaCupo = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+# Funcion que devuelve todos los articulos rechazados por promedio.
+#
+def getArticulosRechazadosPorPromedio():
+    try:
+        articulo = Articulo.objects.filter(rechazadoPorPromedio = True)
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+
+#
+# Funcion que devuelve todos los articulos aceptados especiales.
+#
+def getArticulosAceptadosEspecial():
+    try:
+        articulo = Articulo.objects.filter(aceptadoEspecial = True)
         if len(articulo) == 0:
             articulo = None
     except Articulo.DoesNotExist:

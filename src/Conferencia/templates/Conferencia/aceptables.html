@@ -32,8 +32,11 @@
 {% else %}
 	<h2>No hay artículos empatados</h2>
 {% endif %}
-
-<a href="{% url 'Conferencia:mostrarFormComprobar' %}">Desempatar</a>
+{% if articuloEmpatado %}
+<a href="{% url 'Conferencia:mostrarFormComprobar' 'desempatar'%}">Desempatar manualmente</a>
 <br />
+<a href="{% url 'Conferencia:llenarDiccionarioTopicos'%}">Desempatar por tópico</a>
+<br />
+{% endif %}
 <a href="{% url 'Conferencia:indice' %}">Volver a la página principal</a>
 {% endblock %}
