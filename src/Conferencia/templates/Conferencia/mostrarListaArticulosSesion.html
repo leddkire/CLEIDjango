@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+{%block content%}
+<h3> Lista de articulos por sesion </h3>
+<ul>
+{%for evento in eventos %}
+	<li>{{evento.titulo}}</li>
+	<ul>
+	{%if evento.articulo_set.all %}
+	{%for articulo in evento.articulo_set.all %}
+	
+	
+		<li>{{articulo.titulo}}</li>
+	
+	{%endfor%}
+	{%endif%}
+	
+	{%if evento.articulo %}
+		<li>{{evento.articulo.titulo}}</li>
+	{%endif%}
+	</ul>
+	<p></p>
+	
+{%endfor%}	
+</ul>
+
+<a href="{% url 'Conferencia:indice' %}"> Regresar a la pagina principal</a>
+
+{%endblock%}

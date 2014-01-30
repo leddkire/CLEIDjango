@@ -29,6 +29,7 @@ from funciones import getDatosConferencia
 from funciones import getArticulosEmpatados
 from funciones import getPersona
 from funciones import getComite
+from Evento.models import Ponencia,Taller,CharlaInvitada
 
 def indice(request):
     conferencia = Conferencia.objects.all()
@@ -467,6 +468,18 @@ def llenarDiccionarioTopicos(request):
             break
     return render(request, 'Conferencia/desempatarPorTopico.html', {'listaAceptados': getArticulosAceptadosYEspeciales(), 'articulosRestantes':maxarticulos})
     
+def pedirTipoDeEvento(request):
+        return render(request,'Conferencia/pedirTipoDeEvento.html')
+
+def generarListaArticulosSesion(request,evento_tipo):    
+    if(evento_tipo == 'ponencia'):
+        eventos = Ponencia.objects.all()
+    elif evento_tipo == 'taller':
+        eventos = Taller.objects.all()
+    elif evento_tipo == 'charlaInvitada':
+        eventos = CharlaInvitada.objects.all()
+    return render(request,'Conferencia/mostrarListaArticulosSesion.html',{'eventos':eventos})
+  
 #{%extends "base.html"%}
 #{%block content%}
 #{%endblock%}

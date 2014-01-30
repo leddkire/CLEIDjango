@@ -19,5 +19,7 @@ urlpatterns = patterns('',
     url(r'^elegirEspeciales/$', views.elegirEspeciales, name='elegirEspeciales'),
     url(r'^agregarEspecial/(?P<articulo_id>\d+)/$', views.agregarEspecial, name='agregarEspecial'),
     url(r'^llenarDiccionarioTopicos/$', views.llenarDiccionarioTopicos, name='llenarDiccionarioTopicos'),
+    url(r'^pedirTipoDeEvento/$',views.pedirTipoDeEvento, name = 'pedirTipoDeEvento'),
+    url(r'^generarListaArticulosSesion/(?P<evento_tipo>\w+)/$',views.generarListaArticulosSesion, name = 'generarListaArticulosSesion'),
     #url(r'^comprobarEmailComite/$',views.comprobarEmailComite, name='comprobarEmailComite'), 
 )

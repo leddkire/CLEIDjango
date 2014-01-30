@@ -1,0 +1,13 @@
+{%extends "base.html"%}
+{%block content%}
+<h3> Seleccione el tipo de evento: </h3>
+<ul>
+	<li><a href="{%url 'Conferencia:generarListaArticulosSesion' 'ponencia' %}">Ponencias</a></li>
+	<li><a href="{%url 'Conferencia:generarListaArticulosSesion' 'taller' %}">Talleres</a></li>
+	<li><a href="{%url 'Conferencia:generarListaArticulosSesion' 'charlaInvitada' %}">Charlas Invitadas</a></li>
+	
+</ul>
+
+<a href="{% url 'Conferencia:indice' %}"> Regresar a la pagina principal</a>	
+
+{%endblock%}
