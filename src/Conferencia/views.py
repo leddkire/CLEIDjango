@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 import django.db.models
 import operator
+from operator import itemgetter
 
 # Create your views here.
 from Articulo.models import Articulo
@@ -412,55 +413,55 @@ def agregarEspecial(request, articulo_id):
 def llenarDiccionarioTopicos(request):
     listaTopicos = []
     topicos = getTopicos()
-    #Se hace un diccionario con todos los topicos que puede haber en la conferencia y se le asigna la cantidad de
+    #Se hace una lista con todos los topicos que puede haber en la conferencia y se le asigna la cantidad de
     #articulos aceptados con ese topico
-    for top in topicos:
-        listaTopicos = listaTopicos+[[top.nombre, getNumArticulosDeTopico(top.nombre)]]
-    listaTopicos.sort(key= lambda tup: tup[1], reverse=False)
+    if topicos != None:
+        for top in topicos:
+            listaTopicos = listaTopicos+[[top.nombre, getNumArticulosDeTopico(top.nombre)]]
+    #Se ordena de topico que tiene menor cantidad de articulos a mayor cantidad
+    listaTopicos.sort(key=itemgetter(1))
     #Se calculan cuantos articulos faltan por aceptar
     listaAceptados = getArticulosAceptadosYEspeciales()
     maxarticulos = getDatosConferencia()
     if listaAceptados != None:
-        print str(len(listaAceptados))
         maxarticulos = maxarticulos - len(listaAceptados)
     i = 0
     topicoValido = False
-    print str(maxarticulos)
+    #Se itera entre todos los topicos, tomando el que tiene menor cantidad de articulos aceptados primero
     while i < len(listaTopicos):
         if maxarticulos != 0:
             elem = listaTopicos[i]
             empatados = getArticulosEmpatados()
             if empatados != None:
                 j = 0
+                #Se itera sobre los articulos empatados y si hay uno que contenga el topico elegido en
+                #la iteracion externa, se acepta y se rompe el ciclo.
                 while j < len(empatados):
                     
                     try:
                         articulo = empatados[j]
                         topicoValido = False
                         top = articulo.topicos.get(nombre = elem[0])
-                        print top.nombre + str(elem[1])
                         articulo.empatado = False
                         articulo.rechazadoFaltaCupo = False
                         articulo.aceptado = True
                         articulo.save()
                         maxarticulos = maxarticulos - 1
                         elem[1] += 1
-                        #del(listaTopicos[i])
-                        #listaTopicos.insert(i, elem)
                         topicoValido = True
                         j = len(empatados)
                     except Topico.DoesNotExist:
-                        break
                         pass
                     j += 1
             else:
                 break
+            #topicoValido indica si se encontro un articulo entre empatados con el topico seleccionado, en caso
+            #de haber encontrado uno, se ordena de nuevo la lista de manera que quede el topico con menos articulos
+            #de primero y se sigue en la misma posicion. En caso no haber encontrado ninguno, se pasa al siguiente topico.
             if not topicoValido:
                 i += 1
             else:
-                print str(listaTopicos[i][1])
-                print str(maxarticulos)
-                listaTopicos.sort(key= lambda tup: tup[1], reverse=False)
+                listaTopicos.sort(key=itemgetter(1))
         else:
             i = len(listaTopicos)
             break

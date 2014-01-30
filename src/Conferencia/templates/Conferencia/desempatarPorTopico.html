@@ -5,4 +5,9 @@
 		<li>{{top.titulo}}</li>
 	{% endfor %}
 	</ul>
+{% else %}
+	<h2>No hay artículos para desempatar</h2>
 {% endif %}
+
+
+<a href="{% url 'Conferencia:mostrarTiposDeArticulos' %}">Volver</a>
