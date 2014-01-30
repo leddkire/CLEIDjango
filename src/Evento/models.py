@@ -1,6 +1,5 @@
 from django.db import models
-from Lugar.models import Lugar 
-from Articulo.models import Articulo
+from Lugar.models import Lugar
 from Comite.models import Moderador
 from Topico.models import Topico
 
@@ -34,20 +33,18 @@ class EventoSocial(Evento):
         return self.titulo
     
 class Taller(Evento):
-    articulo = models.OneToOneField(Articulo, null = True)
+    
     topico = models.ForeignKey(Topico,verbose_name = 'Topico principal')
     def __unicode__(self):
         return self.titulo
     
 class Ponencia(Evento):
-    articulos = models.ForeignKey(Articulo, null = True)
     moderadores = models.ManyToManyField(Moderador, null = True)
     topico = models.ForeignKey(Topico,verbose_name = 'Topico principal')
     def __unicode__(self):
         return self.titulo
     
 class CharlaInvitada(Evento):
-    articulo = models.OneToOneField(Articulo, null = True)
     moderadores = models.ManyToManyField(Moderador, null = True)
     topico = models.ForeignKey(Topico, verbose_name = 'Topico principal')
     def __unicode__(self):

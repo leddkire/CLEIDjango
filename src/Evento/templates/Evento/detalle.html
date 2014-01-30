@@ -9,6 +9,18 @@
 <p><strong>Fecha de Inicio:</strong> {{evento.fechaIni}}</p>
 <p><strong>Hora de Inicio:</strong> {{evento.horaIni}}</p>
 <p><strong>Topico Principal:</strong> {{evento.topico}}</p>
-
+{%if evento.articulo %}
+<p><strong> Articulo:</strong> {{evento.articulo.titulo}}</p>
+{%endif%}
+{%if articulos%}
+<p><strong> Articulos:</strong></p>
+<ul>
+{%for articulo in articulos %}
+	<li>{{articulo.titulo}}</li>
+{% endfor %}
+</ul>
+{%endif%}
+<a href = "{% url 'Evento:mostrarArticulos' evento_tipo evento_id %}"> Asignarle articulos al evento </a>
 <a href="{% url 'Evento:indice' %}"> Regresar al indice</a>
+
 {% endblock %}

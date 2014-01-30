@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # /evento/mostrarArticulo/<evento_tipo>/<evento_id>
     url(r'^mostrarArticulos/(?P<evento_tipo>\w+)/(?P<evento_id>\d+)/$', views.mostrarArticulos, name='mostrarArticulos'),
     # /evento/asignarArticulo/<evento_tipo>/<evento_id>
-    url(r'^asignarArticulos/(?P<evento_tipo>\w+)/(?P<evento_id>\d+)/(?P<articulo_id>\d+)/$', views.asignarArticulos, name='asignarArticulos'),
+    url(r'^asignarArticulo/(?P<evento_tipo>\w+)/(?P<evento_id>\d+)/(?P<articulo_id>\d+)/$', views.asignarArticulo, name='asignarArticulo'),
     
 )
 

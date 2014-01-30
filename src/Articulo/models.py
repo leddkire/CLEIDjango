@@ -2,6 +2,7 @@ from django.db import models
 
 from Autor.models import Autor
 from Topico.models import Topico
+from Evento.models import Ponencia, CharlaInvitada, Taller
 
 class Articulo(models.Model):
     titulo = models.CharField(max_length=100)
@@ -16,6 +17,9 @@ class Articulo(models.Model):
     aceptadoEspecial = models.BooleanField(default = False)
     rechazadoFaltaCupo = models.BooleanField(default = False)
     rechazadoPorPromedio = models.BooleanField(default = False)
+    perteneceAPotencia = models.ForeignKey(Ponencia, null = True)
+    perteneceATaller = models.OneToOneField(Taller, null = True)
+    perteneceACharlaInvitada = models.OneToOneField(CharlaInvitada, null = True)
     
     def __unicode__(self):
         return self.titulo

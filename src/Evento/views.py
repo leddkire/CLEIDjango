@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from Evento.models import Apertura,Clausura,Taller,Ponencia,CharlaInvitada, EventoSocial
 from Evento.forms import EventoForm, TallerCharlaPonenciaForm
 from Evento.funciones import existe, existeApertura, existeClausura, intersectaFecha
+from Articulo.models import Articulo
 
 def indice(request):
     apertura = Apertura.objects.all()
@@ -29,22 +30,26 @@ def indice(request):
 def detalle(request, evento_id, evento_tipo):
     if(evento_tipo == 'apertura'):
         evento = get_object_or_404(Apertura,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_tipo':evento_tipo,'evento_id': evento_id})
     elif(evento_tipo == 'clausura'):
         evento = get_object_or_404(Clausura,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_tipo':evento_tipo,'evento_id': evento_id})
     elif(evento_tipo == 'taller'):
         evento = get_object_or_404(Taller,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        return render(request, 'Evento/detalle.html', {'evento':evento,'evento_tipo':evento_tipo, 'evento_id': evento_id})
     elif(evento_tipo == 'ponencia'):
         evento = get_object_or_404(Ponencia,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        articulos = evento.articulo_set.all()
+        return render(request, 'Evento/detalle.html', {'evento':evento,
+                                                       'evento_tipo':evento_tipo, 
+                                                       'evento_id': evento_id,
+                                                       'articulos':articulos})
     elif(evento_tipo == 'charlaInvitada'):
         evento = get_object_or_404(CharlaInvitada,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_tipo':evento_tipo,'evento_id': evento_id})
     elif(evento_tipo == 'eventoSocial'):
         evento = get_object_or_404(EventoSocial,pk=evento_id)
-        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_id': evento_id})
+        return render(request, 'Evento/detalle.html', {'evento':evento, 'evento_tipo':evento_tipo,'evento_id': evento_id})
     else:
         return HttpResponse("Error al definir un evento.")
 
@@ -156,6 +161,31 @@ def asignarMod(request, evento_id, evento_tipo):
             
 #Asignacion de articulos a los eventos
 def mostrarArticulos(request,evento_tipo,evento_id):
-    
-def asignarArticulo(request, evento_tipo, evento_id, articulo_id):       
-    
+    if(evento_tipo == 'ponencia'):
+        evento = get_object_or_404(Ponencia,pk = evento_id)
+    elif(evento_tipo == 'taller'):
+        evento = get_object_or_404(Taller ,pk = evento_id)
+    elif(evento_tipo == 'charlaInvitada'):
+        evento = get_object_or_404(CharlaInvitada, pk = evento_id)
+    articulosAceptados = Articulo.objects.filter(aceptado = True).filter(topicos = evento.topico).filter(perteneceAPotencia__isnull = True).filter(perteneceATaller__isnull=True).filter(perteneceACharlaInvitada__isnull = True)
+    articulosEspeciales = Articulo.objects.filter(aceptadoEspecial = True).filter(topicos = evento.topico).filter(perteneceAPotencia__isnull = True).filter(perteneceATaller__isnull=True).filter(perteneceACharlaInvitada__isnull = True)
+    return render(request, 'Evento/mostrarArticulo.html',{'articulosAceptados':articulosAceptados,
+                                                          'articulosEspeciales':articulosEspeciales,
+                                                          'evento_tipo':evento_tipo,
+                                                          'evento_id':evento_id,
+                                                          })
+
+def asignarArticulo(request, evento_tipo, evento_id, articulo_id):
+    articulo = get_object_or_404(Articulo,pk=articulo_id)
+    if(evento_tipo == 'ponencia'):
+        evento = get_object_or_404(Ponencia,pk = evento_id)
+        evento.articulo_set.add(articulo)
+    elif(evento_tipo == 'taller'):
+        evento = get_object_or_404(Taller,pk = evento_id)
+        articulo.perteneceATaller = evento
+    elif(evento_tipo == 'charlaInvitada'):
+        evento = get_object_or_404(CharlaInvitada,pk = evento_id)
+        articulo.perteneceACharlaInvitada = evento
+    articulo.save()
+    evento.save()
+    return HttpResponseRedirect(reverse('Evento:detalle', args = (evento_id,evento_tipo)))
