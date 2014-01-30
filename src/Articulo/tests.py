@@ -37,6 +37,8 @@ class ArticuloTestCase(TestCase):
         ar.save()
         ar.topicos.add(t)
         ar.autores.add(a)
+        
+        ar.save()
         resp = self.client.get('/articulo/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('articulos' in resp.context)

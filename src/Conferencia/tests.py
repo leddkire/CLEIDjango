@@ -10,8 +10,13 @@ class ConferenciaTestCase(TestCase):
         self.assertEqual(c.maxArticulos, 100)
         
     def test_conferenciaVista(self):
-        c = Conferencia(anio = 2013, duracion = 2, pais = "Venezuela", maxArticulos = 100)
-        c.save()
+        
+        conferencia_1 = Conferencia.objects.create(
+                                                   anio = 2013,
+                                                   duracion = 2,
+                                                   pais = "Venezuela",
+                                                   maxArticulos = 100
+                                                   )
         resp = self.client.get('/conferencia/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('conferencia' in resp.context)

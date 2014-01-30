@@ -7,8 +7,7 @@ class TopicoTestCase(TestCase):
         self.assertEqual(t.nombre, "Ingenieria de Software")
     
     def test_topicoVista(self):
-        t = Topico(nombre = "Ingenieria de Software")
-        t.save()
+        topico_1 = Topico.objects.create(nombre = "Ingenieria de Software")
         resp = self.client.get('/topico/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('topicos' in resp.context)

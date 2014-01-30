@@ -11,15 +11,19 @@ class ComiteTestCase(TestCase):
         self.assertEqual(c.arbitro, True)
         
     def test_comiteVista(self):
-        p = Persona(correo = "eznex7@gmail.com", dirpostal = 5020)
-        p.save()
-        c = Comite(correo = p, presidente = False, arbitro = True)
-        c.save()
+        persona_1 = Persona.objects.create(
+                                           correo = "eznex7@gmail.com",
+                                           dirpostal = 5020)
+        comite_1 = Comite.objects.create(
+                                         correo = persona_1,
+                                         presidente = False,
+                                         arbitro = True)
+        
         resp = self.client.get('/comite/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('comite' in resp.context)
         self.assertEqual([comite.pk for comite in resp.context['comite']], [1])
         comite_1 = resp.context['comite'][0]
-        self.assertEqual(comite_1.correo, p)
+        self.assertEqual(comite_1.correo, persona_1)
         self.assertEqual(comite_1.presidente, False)
         self.assertEqual(comite_1.arbitro, True)
