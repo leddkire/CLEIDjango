@@ -21,5 +21,6 @@ urlpatterns = patterns('',
     url(r'^llenarDiccionarioTopicos/$', views.llenarDiccionarioTopicos, name='llenarDiccionarioTopicos'),
     url(r'^pedirTipoDeEvento/$',views.pedirTipoDeEvento, name = 'pedirTipoDeEvento'),
     url(r'^generarListaArticulosSesion/(?P<evento_tipo>\w+)/$',views.generarListaArticulosSesion, name = 'generarListaArticulosSesion'),
+    url(r'^desempatarPorPaises/$', views.desempatarPorPaises, name='desempatarPorPaises'),
     #url(r'^comprobarEmailComite/$',views.comprobarEmailComite, name='comprobarEmailComite'), 
 )

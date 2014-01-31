@@ -8,5 +8,5 @@ class ConferenciaForm(ModelForm):
     
     class Meta:
         model = Conferencia
-        fields = ['anio', 'duracion', 'pais', 'maxArticulos']
+        fields = ['anio', 'pais', 'maxArticulos']
 

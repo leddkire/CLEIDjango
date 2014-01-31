@@ -4,7 +4,6 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 import django.db.models
-import operator
 from operator import itemgetter
 
 # Create your views here.
@@ -30,7 +29,7 @@ from funciones import getArticulosEmpatados
 from funciones import getPersona
 from funciones import getComite
 from Evento.models import Ponencia,Taller,CharlaInvitada
-
+from funciones import getAutor
 def indice(request):
     conferencia = Conferencia.objects.all()
     context = RequestContext(request, {
@@ -57,7 +56,7 @@ def conferenciaVacio():
 def mostrarFormConferencia(request):
     confe = conferenciaVacio()
     if confe != None:
-        formConferencia = ConferenciaForm(initial={'anio': confe[0].anio, 'duracion': confe[0].duracion, 'pais':confe[0].pais, 
+        formConferencia = ConferenciaForm(initial={'anio': confe[0].anio, 'pais':confe[0].pais, 
                                                    'maxArticulos':confe[0].maxArticulos})
     else:
         formConferencia = ConferenciaForm()
@@ -66,7 +65,6 @@ def mostrarFormConferencia(request):
 def armarEntidad(formConferencia):
     conferencia = Conferencia()
     conferencia.anio = formConferencia.cleaned_data['anio']
-    conferencia.duracion = formConferencia.cleaned_data['duracion']
     conferencia.pais = formConferencia.cleaned_data['pais']
     conferencia.maxArticulos = formConferencia.cleaned_data['maxArticulos']
         
@@ -77,7 +75,6 @@ def armarEntidad(formConferencia):
 
     if confe != None:
         confe.anio = conferencia.anio
-        confe.duracion = conferencia.duracion
         confe.pais = conferencia.pais
         confe.maxArticulos = conferencia.maxArticulos
         confe.save()
@@ -357,6 +354,9 @@ def reiniciarSeleccion(request):
     })
     return render(request, 'Conferencia/index.html', context)
 
+def generarListaArticulos(request):
+    return True
+    
 def desempatar(request):
     listaAceptados = getArticulosAceptadosYEspeciales()
     listaEmpatados = getArticulosEmpatados()
@@ -479,8 +479,86 @@ def generarListaArticulosSesion(request,evento_tipo):
     elif evento_tipo == 'charlaInvitada':
         eventos = CharlaInvitada.objects.all()
     return render(request,'Conferencia/mostrarListaArticulosSesion.html',{'eventos':eventos})
-  
-#{%extends "base.html"%}
-#{%block content%}
-#{%endblock%}
-#
+
+def desempatarPorPaises(request):
+    # lista de lista que tendra asociado al articulo con el pais
+    listaFinal = []
+    listaArticulos = []
+    # lista de lista que tendra los paises con la cantidad(numero) de articulos
+    listaPaises = []
+    autores = []
+    listaArticulos = getArticulosAceptables()
+    if listaArticulos != None:
+        for articulo in listaArticulos:
+            # lista temporal que almacena a cada articulo los paises de sus autores
+            listaTemp = []
+            autores = articulo.autores.all()
+            listaTemp += [articulo]
+            for person in autores:
+                try:
+                    country = person.persona.pais
+                except Persona.DoesNotExist:
+                    pass
+                listaTemp += [country]
+                flag = False
+                for lista in listaPaises:
+                    # en la posicion 0 de la lista estaran los paises, en la 1 el numero de veces
+                    if lista[0] == country:
+                        if articulo.aceptado == True:
+                            lista[1] += 1
+                        flag = True
+                    else:
+                        flag = False
+                # forma de llenar la lista de paises
+                if flag == False:
+                    if articulo.aceptado == True:
+                        listaPaises += [[country,1]]
+                    else:
+                        listaPaises += [[country,0]]
+            listaFinal += [listaTemp]
+    #Se ordena por paises que tienen menor cantidad de articulos a mayor cantidad
+    listaPaises.sort(key=itemgetter(1))
+    #Se calculan cuantos articulos faltan por aceptar
+    listaAceptados = getArticulosAceptadosYEspeciales()
+    maxarticulos = getDatosConferencia()
+    if listaAceptados != None:
+        maxarticulos = maxarticulos - len(listaAceptados)
+    i = 0
+    paisValido = False
+    #Se itera entre todos los paises, tomando el que tiene menor cantidad de articulos aceptados primero
+    while i < len(listaPaises):
+        if maxarticulos != 0:
+            elem = listaPaises[i]
+            empatados = getArticulosEmpatados()
+            if empatados != None:
+                j = 0
+                #Se itera sobre los articulos empatados y si hay uno que contenga el pais elegido en
+                #la iteracion externa, se acepta y se rompe el ciclo.
+                while j < len(listaFinal):  
+                    list = listaFinal[j]
+                    print list
+                    if elem[0] in list:
+                        paisValido = False
+                        if list[0].empatado==True:                               
+                            list[0].empatado = False
+                            list[0].rechazadoFaltaCupo = False
+                            list[0].aceptado = True
+                            list[0].save()
+                            maxarticulos = maxarticulos - 1
+                            elem[1] += 1
+                            paisValido = True
+                            j = len(listaFinal)
+                    j += 1
+            else:
+                break
+            #paisValido indica si se encontro un articulo entre empatados con el pais seleccionado, en caso
+            #de haber encontrado uno, se ordena de nuevo la lista de manera que quede el pais con menos articulos
+            #de primero y se sigue en la misma posicion. En caso no haber encontrado ninguno, se pasa al siguiente pais.
+            if not paisValido:
+                i += 1
+            else:
+                listaPaises.sort(key=itemgetter(1))
+        else:
+            i = len(listaPaises)
+            break
+    return render(request, 'Conferencia/desempatarPorPais.html', {'listaAceptados': getArticulosAceptadosYEspeciales(), 'articulosRestantes':maxarticulos})

@@ -6,7 +6,6 @@
 	<ul style="list-style-type: none;">
 	{% for top in conferencia %}
 		<li><p> Anio: {{top.anio}} <br /> 
-			Duracion: {{top.duracion}} <br />
 			Pais: {{top.pais}} <br />
 			Cantidad de articulos: {{top.maxArticulos}}</p></li>
 	{% endfor %}
@@ -46,6 +45,8 @@
 	<a href="{% url 'Conferencia:mostrarEstadoArticulos' %}"> Mostrar el estado de los artículos </a>
 	<br />
 	<a href="{% url 'Conferencia:reiniciarSeleccion' %}"> Reiniciar Proceso de Selección </a>
+	<br/>
+	<a href = "{%url 'asignarModerador:indice' %}"> Asignar moderadores a un evento </a>
 </div>
 {% endblock %}
 

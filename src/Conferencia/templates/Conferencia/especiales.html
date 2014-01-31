@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Artículos Aceptados Especiales:</h1>
 {% if error_message %} <p><strong>{{error_message}} </strong></p> {% endif %}
 {% if listaEspeciales %}
@@ -23,3 +25,4 @@
 {% endif %}
 
 <a href="{% url 'Conferencia:mostrarTiposDeArticulos' %}">Volver</a>
+{% endblock %}
