@@ -487,7 +487,7 @@ def desempatarPorPaises(request):
     # lista de lista que tendra los paises con la cantidad(numero) de articulos
     listaPaises = []
     autores = []
-    listaArticulos = getArticulosAceptables()
+    listaArticulos = getArticulosAceptablesYEspeciales()
     if listaArticulos != None:
         for articulo in listaArticulos:
             # lista temporal que almacena a cada articulo los paises de sus autores
@@ -519,7 +519,7 @@ def desempatarPorPaises(request):
     #Se ordena por paises que tienen menor cantidad de articulos a mayor cantidad
     listaPaises.sort(key=itemgetter(1))
     #Se calculan cuantos articulos faltan por aceptar
-    listaAceptados = getArticulosAceptados()
+    listaAceptados = getArticulosAceptadosYEspeciales()
     maxarticulos = getDatosConferencia()
     if listaAceptados != None:
         maxarticulos = maxarticulos - len(listaAceptados)
@@ -561,4 +561,4 @@ def desempatarPorPaises(request):
         else:
             i = len(listaPaises)
             break
-    return render(request, 'Conferencia/desempatarPorPais.html', {'listaAceptados': getArticulosAceptados(), 'articulosRestantes':maxarticulos})
+    return render(request, 'Conferencia/desempatarPorPais.html', {'listaAceptados': getArticulosAceptadosYEspeciales(), 'articulosRestantes':maxarticulos})
