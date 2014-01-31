@@ -10,7 +10,6 @@ class Conferencia(models.Model):
          
     
     anio = models.PositiveIntegerField(('anio'), max_length=4, choices=anioOpciones, default=datetime.datetime.now().year)
-    duracion = models.PositiveIntegerField()
     pais = models.CharField(max_length=100)
     maxArticulos = models.PositiveIntegerField('maximo de articulos para aceptar')
     

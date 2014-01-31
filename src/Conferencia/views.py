@@ -57,7 +57,7 @@ def conferenciaVacio():
 def mostrarFormConferencia(request):
     confe = conferenciaVacio()
     if confe != None:
-        formConferencia = ConferenciaForm(initial={'anio': confe[0].anio, 'duracion': confe[0].duracion, 'pais':confe[0].pais, 
+        formConferencia = ConferenciaForm(initial={'anio': confe[0].anio, 'pais':confe[0].pais, 
                                                    'maxArticulos':confe[0].maxArticulos})
     else:
         formConferencia = ConferenciaForm()
@@ -66,7 +66,6 @@ def mostrarFormConferencia(request):
 def armarEntidad(formConferencia):
     conferencia = Conferencia()
     conferencia.anio = formConferencia.cleaned_data['anio']
-    conferencia.duracion = formConferencia.cleaned_data['duracion']
     conferencia.pais = formConferencia.cleaned_data['pais']
     conferencia.maxArticulos = formConferencia.cleaned_data['maxArticulos']
         
@@ -77,7 +76,6 @@ def armarEntidad(formConferencia):
 
     if confe != None:
         confe.anio = conferencia.anio
-        confe.duracion = conferencia.duracion
         confe.pais = conferencia.pais
         confe.maxArticulos = conferencia.maxArticulos
         confe.save()
