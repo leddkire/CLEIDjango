@@ -487,7 +487,7 @@ def desempatarPorPaises(request):
     # lista de lista que tendra los paises con la cantidad(numero) de articulos
     listaPaises = []
     autores = []
-    listaArticulos = getArticulosAceptablesYEspeciales()
+    listaArticulos = getArticulosAceptables()
     if listaArticulos != None:
         for articulo in listaArticulos:
             # lista temporal que almacena a cada articulo los paises de sus autores
