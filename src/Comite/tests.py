@@ -1,6 +1,6 @@
 from django.test import TestCase
 from Persona.models import Persona
-from Comite.models import Comite
+from Comite.models import Comite, Moderador
 
 class ComiteTestCase(TestCase):
     def test_comite(self):
@@ -23,3 +23,13 @@ class ComiteTestCase(TestCase):
         self.assertEqual(comite_1.correo, p)
         self.assertEqual(comite_1.presidente, False)
         self.assertEqual(comite_1.arbitro, True)
+        
+    def test_Moderador(self):
+        p = Persona(correo = "eznex7@gmail.com", dirpostal = 5020)
+        p.save()
+        c = Comite(correo = p, presidente = False, arbitro = True)
+        c.save()
+        m = Moderador(comite = c)
+        m.save()
+        resp = self.client.get('/comite/')
+        self.assertEqual(resp.status_code, 200)

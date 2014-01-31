@@ -26,7 +26,7 @@ class ArticuloTestCase(TestCase):
         self.assertEqual(ar.aceptable, True)
         self.assertEqual(ar.empatado, False)
         
-    def test_articuloVista(self):
+    def test_articuloVistaIndice(self):
         t = Topico(nombre = "Base de Datos")
         t.save()
         p = Persona(correo = "eznex7@gmail.com", dirpostal = 5020)
@@ -37,6 +37,7 @@ class ArticuloTestCase(TestCase):
         ar.save()
         ar.topicos.add(t)
         ar.autores.add(a)
+        ar.save()
         resp = self.client.get('/articulo/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('articulos' in resp.context)
@@ -51,3 +52,6 @@ class ArticuloTestCase(TestCase):
         self.assertEqual(articulo_1.aceptado, True)
         self.assertEqual(articulo_1.aceptable, True)
         self.assertEqual(articulo_1.empatado, False)
+        
+        resp = self.client.get('/articulo/1/', follow = True)
+        self.assertEqual(resp.status_code, 200)

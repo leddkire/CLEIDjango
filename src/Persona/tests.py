@@ -32,3 +32,16 @@ class PersonaTestCase(TestCase):
         self.assertEqual(persona_1.pais, "Venezuela")
         self.assertEqual(persona_1.pagina, "NA")
         
+    def test_mostrarFormPersonaVista(self):
+        p = Persona(nombre = "Ezequiel", apellido = "Gimenez", correo = "eze@gmail.com", dirpostal = 5020, 
+                    institucion = "USB", telefono = "04242042547", pais = "Venezuela", pagina = "NA")
+        p.save()
+        resp = self.client.get('/persona/mostrarFormPersona', follow = True)
+        self.assertEqual(resp.status_code, 200)
+    
+    def test_crearVista(self):
+        p = Persona(nombre = "Ezequiel", apellido = "Gimenez", correo = "eze@gmail.com", dirpostal = 5020, 
+                    institucion = "USB", telefono = "04242042547", pais = "Venezuela", pagina = "NA")
+        p.save()
+        resp = self.client.get('/persona/crear', follow = True)
+        self.assertEqual(resp.status_code, 200)

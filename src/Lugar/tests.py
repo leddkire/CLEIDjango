@@ -19,3 +19,15 @@ class LugarTestCase(TestCase):
         self.assertEqual(lugar_1.nombre, "Caracas")
         self.assertEqual(lugar_1.ubicacion, "Mys 213")
         self.assertEqual(lugar_1.capacidadMax, 30)
+        
+    def test_lugarDetalleVista(self):
+        l = Lugar(nombre = "Caracas", ubicacion = "Mys 213", capacidadMax = 30)
+        l.save()
+        resp = self.client.get('/lugar/opciones/1', follow = True)
+        self.assertEqual(resp.status_code, 200) 
+        
+    def test_lugarDefinirEventoVista(self):
+        l = Lugar(nombre = "Caracas", ubicacion = "Mys 213", capacidadMax = 30)
+        l.save()
+        resp = self.client.get('/lugar/opciones/1/definirEvento', follow = True)
+        self.assertEqual(resp.status_code, 200) 
