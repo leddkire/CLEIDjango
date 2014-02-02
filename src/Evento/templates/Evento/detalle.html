@@ -8,7 +8,9 @@
 <p><strong>Duracion:</strong> {{evento.duracion}}</p>
 <p><strong>Fecha de Inicio:</strong> {{evento.fechaIni}}</p>
 <p><strong>Hora de Inicio:</strong> {{evento.horaIni}}</p>
+{%if evento.topico%}
 <p><strong>Topico Principal:</strong> {{evento.topico}}</p>
+{% endif%}
 {%if evento.articulo %}
 <p><strong> Articulo:</strong> {{evento.articulo.titulo}}</p>
 {%endif%}

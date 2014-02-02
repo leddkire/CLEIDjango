@@ -81,6 +81,17 @@ def getTopicos():
     return topicos
 
 #
+#
+#
+def getArticulos():
+    try:
+        articulo = Articulo.objects.all()
+        if len(articulo) == 0:
+            articulo = None
+    except Articulo.DoesNotExist:
+        articulo = None
+    return articulo
+#
 # Funcion que devuelve todos articulos
 #
 def getArticulosNoEspeciales():

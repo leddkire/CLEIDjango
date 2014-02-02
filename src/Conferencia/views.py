@@ -15,6 +15,7 @@ from Comite.forms import CorreoForm
 from funciones import getArticulosAceptados
 from funciones import getNumArticulosDeTopico
 from funciones import getTopicos
+from funciones import getArticulos
 from funciones import getArticulosNoEspeciales
 from funciones import getArticulosAceptadosYEspeciales
 from funciones import getArticulosAceptadosEspecial
@@ -487,7 +488,7 @@ def desempatarPorPaises(request):
     # lista de lista que tendra los paises con la cantidad(numero) de articulos
     listaPaises = []
     autores = []
-    listaArticulos = getArticulosAceptables()
+    listaArticulos = getArticulos()
     if listaArticulos != None:
         for articulo in listaArticulos:
             # lista temporal que almacena a cada articulo los paises de sus autores
@@ -504,7 +505,7 @@ def desempatarPorPaises(request):
                 for lista in listaPaises:
                     # en la posicion 0 de la lista estaran los paises, en la 1 el numero de veces
                     if lista[0] == country:
-                        if articulo.aceptado == True:
+                        if articulo.aceptado == True or articulo.aceptadoEspecial == True:
                             lista[1] += 1
                         flag = True
                     else:
